@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Example 01.04 - Materials, light and animation</title>
+    <script type="text/javascript" src="../build/three.js"></script>
+
+    <script type="text/javascript" src="./js/libs/stats.min.js"></script>
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div id="Stats-output">
+</div>
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<!-- Javascript code that runs our Three.js examples -->
+<script type="text/javascript">
+
+    var scene;
+    var camera;
+    var renderer;
+    var objectLoader;
+    var sofas;
+    function init() {
+        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+        camera.position.z = 40;
+
+        // scene
+
+        scene = new THREE.Scene();
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        var ambient = new THREE.AmbientLight( 0x444444 );
+        scene.add( ambient );
+        // instantiate a loader
+        var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+        directionalLight.position.set( 0, 0, 1 ).normalize();
+        scene.add( directionalLight );
+
+        objectLoader = new THREE.ObjectLoader();
+        objectLoader.load( "models/lamp.json", function ( obj ) {
+            sofas=obj;
+            console.log(obj);
+            console.log(sofas);
+            scene.add( obj );
+        } );
+
+        console.log(sofas);
+
+        
+
+
+        renderScene();
+
+        function renderScene() {
+            // render using requestAnimationFrame
+                // camera.position.x += 1;
+                // camera.position.y += 1;
+            renderer.render(scene, camera);
+            requestAnimationFrame(renderScene);
+            sofas.rotation.x+=0.1;
+        }
+
+    }
+    window.onload = init;
+
+</script>
+</body>
+</html>

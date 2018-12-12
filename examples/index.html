@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript" src="../build/three.js"></script>
+    <script type="text/javascript" src="./js/libs/stats.min.js"></script>
+    <script type="text/javascript" src="./js/fps-lib/FPSControls.js"></script>
+    <script type="text/javascript" src="./js/fps-lib/pointerlock.js"></script>
+
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="blocker">
+
+        <div id="instructions">
+            <span style="font-size:40px">Click to play</span>
+            <br />
+            (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        
+        function startGame(){
+
+            var objects=[];
+            var camera;
+            var scene;
+            var loaded;
+            var controls;
+            var objectLoader;
+            var overlayinit=false;
+            init();
+
+            function init(){
+                eventHandlers();
+                loaded=false;
+                camera = new THREE.PerspectiveCamera(80,window.innerWidth/ window.innerHeight, 1 , 9000);
+
+                scene = new THREE.Scene();
+
+                renderer = new THREE.WebGLRenderer();
+
+                var ambient = new THREE.AmbientLight( 0x444444 );
+                scene.add( ambient );
+                // instantiate a loader
+                var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+                directionalLight.position.set( 0, 0, 1 ).normalize();
+                scene.add( directionalLight );
+
+                objectLoader = new THREE.ObjectLoader().load("models/desk.json",function(obj){
+                        objects.push(obj);
+                        controls = new THREE.PointerLockControls( camera, 100, 3, true, objects );
+                        scene.add( controls.getPlayer() );
+                        scene.add(obj);
+                        loaded=true;   
+                });
+
+                        // Floor
+                var floorHeight = 7000;
+                geometry = new THREE.SphereGeometry(floorHeight, 10, 6, 0, (Math.PI * 2), 0, 0.8);
+                geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
+
+                var material = new THREE.MeshLambertMaterial( );
+
+                floorMesh = new THREE.Mesh( geometry, material );
+                objects.push( floorMesh );
+                scene.add( floorMesh  );
+
+                var geometry = new THREE.BoxBufferGeometry( 50, 50, 50 );
+                var material = new THREE.MeshBasicMaterial();
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.x=50;
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setClearColor( 0x000000 );
+                renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+
+                render();
+            }
+
+            function render(){
+                renderer.render(scene,camera);
+                if(loaded){
+                    controls.updateControls();
+                    if(!overlayinit){
+                        ScreenOverlay(controls);
+                        overlayinit=true;
+                    }
+                }
+                requestAnimationFrame(render);
+            }
+
+            function eventHandlers() {
+
+                // Keyboard press handlers
+                var onKeyDown = function ( event ) { event.preventDefault(); event.stopPropagation(); handleKeyInteraction(event.keyCode, true); };
+                var onKeyUp = function ( event ) { event.preventDefault(); event.stopPropagation(); handleKeyInteraction(event.keyCode, false); };
+                document.addEventListener( 'keydown', onKeyDown, false );
+                document.addEventListener( 'keyup', onKeyUp, false );
+
+                // Resize Event
+                window.addEventListener( 'resize', onWindowResize, false );
+            }
+                // HANDLE KEY INTERACTION
+                function handleKeyInteraction(keyCode, boolean) {
+                    var isKeyDown = boolean;
+
+                    switch(keyCode) {
+                        case 38: // up
+                        case 87: // w
+                            controls.movements.forward = boolean;
+                            break;
+
+                        case 40: // down
+                        case 83: // s
+                            controls.movements.backward = boolean;
+                            break;
+
+                        case 37: // left
+                        case 65: // a
+                            controls.movements.left = boolean;
+                            break;
+
+                        case 39: // right
+                        case 68: // d
+                            controls.movements.right = boolean;
+                            break;
+
+                        case 32: // space
+                            if (!isKeyDown) {
+                                controls.jump();
+                            }
+                            break;
+
+                        case 16: // shift
+                            controls.walk(boolean);
+                            break;
+
+                        case 67: // crouch (CTRL + W etc destroys tab in Chrome!)
+                            controls.crouch(boolean);
+
+                    }
+                }
+
+                function onWindowResize() {
+
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+
+                    renderer.setSize( window.innerWidth, window.innerHeight );
+
+                }
+
+        }
+
+        window.onload=startGame();
+
+
+
+    </script>
+</body>
+</html>

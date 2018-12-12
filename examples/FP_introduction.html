@@ -147,7 +147,7 @@
 
 			var geometry = new THREE.TextGeometry( 'New Game', {
 				font: font,
-				size: 2,
+				size: 1.9,
 				height: 0.01,
 			} );
 			var material = new THREE.MeshBasicMaterial({color: 0x000000
@@ -156,6 +156,24 @@
 			var text = new THREE.Mesh(geometry, material);
 			text.position.z = -15;
 			text.position.x = 5;
+			text.lookAt(camera.position);
+			scene.add(text);
+		} );
+
+		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+			var geometry = new THREE.TextGeometry( 'About', {
+				font: font,
+				size: 1.9,
+				height: 0.01,
+			} );
+			var material = new THREE.MeshBasicMaterial({color: 0x000000
+			})
+
+			var text = new THREE.Mesh(geometry, material);
+			text.position.z = -15;
+			text.position.x = 5;
+			text.position.y = -3;
 			text.lookAt(camera.position);
 			scene.add(text);
 		} );

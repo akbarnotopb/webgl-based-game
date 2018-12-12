@@ -40,7 +40,9 @@
 
         // create a render and set the size
         var renderer = new THREE.WebGLRenderer();
-
+        var rotateCameraToAboutFlag = false;
+        var rotateCameraBack = false;
+        
         renderer.setClearColor(new THREE.Color(0xffffff));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
@@ -67,24 +69,11 @@
 	    plane.position.z = -20;
 
 	    // add the plane to the scene
-		//scene.add(plane);    
-
-        var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-        var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-        // position the sphere
-        sphere.position.x = 20;
-        sphere.position.y = 0;
-        sphere.position.z = 2;
-        sphere.castShadow = true;
-
-        // add the sphere to the scene
-        //scene.add(sphere);
+		//scene.add(plane);
 
         var sprite = new THREE.TextureLoader().load('textures/sprite.png');
         // create the particle variables
-		var particleCount = 2000;
+		var particleCount = 1000;
 		var particles = new THREE.Geometry();
 		var particlesVelocity = []
 
@@ -92,7 +81,7 @@
 		      color: 0x000000,
 		      size: 1,
 		      map: sprite,
-		      blending: THREE.NormalBlending,
+		      blending: THREE.NoBlending,
 		      transparent: true
 		    });
 		// now create the individual particles
@@ -121,12 +110,14 @@
 		// add it to the scene
 		particleSystem.position.x = 10;
 		particleSystem.position.z = -15;
-		console.log(particleSystem);
+		//console.log(particleSystem);
 		scene.add(particleSystem);
 
 		/////////////TEXT////////////////////
 		var loader = new THREE.FontLoader();
 
+		var text1 = new THREE.Box3();
+		var text2 = new THREE.Box3();
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
 			var geometry = new THREE.TextGeometry( 'FP Grafkom', {
@@ -143,9 +134,10 @@
 			scene.add(text);
 		} );
 
+
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-			var geometry = new THREE.TextGeometry( 'New Game', {
+			var geometry = new THREE.TextBufferGeometry( 'New Game', {
 				font: font,
 				size: 1.9,
 				height: 0.01,
@@ -162,7 +154,7 @@
 
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-			var geometry = new THREE.TextGeometry( 'About', {
+			var geometry = new THREE.TextBufferGeometry( 'About', {
 				font: font,
 				size: 1.9,
 				height: 0.01,
@@ -176,51 +168,99 @@
 			text.position.y = -3;
 			text.lookAt(camera.position);
 			scene.add(text);
+
+			var aboutTextGeo = new THREE.TextBufferGeometry( 'About: This is a project for\nComputer Graphics final project.\nRifqi Ardia R.\nAkbar Noto P.B.\nChendrasena O.\nSteve Daniels\nEnjoy!', {
+				font: font,
+				size: 0.3,
+				height: 0.01,
+			} );
+			var aboutTextMat = new THREE.MeshBasicMaterial({color: 0xffff00
+			})
+
+			var aboutText = new THREE.Mesh(aboutTextGeo, aboutTextMat);
+			aboutText.position.x = -1;
+			aboutText.position.y = 19;
+			aboutText.position.z = 20;
+			aboutText.lookAt(camera.position);
+			scene.add(aboutText);
 		} );
 
 		/////////////TEXT////////////////////
 
+		/////////////TEXT HITBOXES//////////
+
+		var aboutHitBoxGeo = new THREE.BoxBufferGeometry(15, 4, 0.01);
+		var aboutHitBoxMat = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0});
+		var aboutHitBox = new THREE.Mesh(aboutHitBoxGeo, aboutHitBoxMat);
+		aboutHitBox.position.x = 10;
+		aboutHitBox.position.z = -13;
+		aboutHitBox.position.y = -2;
+		aboutHitBox.lookAt(camera.position);
+		scene.add(aboutHitBox);
+
+		var newGameHitBoxGeo = new THREE.BoxBufferGeometry(12, 2, 0.01);
+		var newGameHitBoxMat = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0});
+		var newGameHitBox = new THREE.Mesh(newGameHitBoxGeo, newGameHitBoxMat);
+		newGameHitBox.position.x = 6;
+		newGameHitBox.position.y = 0.5;
+		newGameHitBox.position.z = 4;
+		newGameHitBox.lookAt(camera.position);
+		scene.add(newGameHitBox);
+		/////////////TEXT HITBOXES////////////
+
+
+		////////////ABOUT MENU////////////
+		//var steve = new THREE.TextureLoader().load('steve.png');
+		var aboutBoxHitBoxGeo = new THREE.BoxBufferGeometry(10, 8, 0.01);
+		var aboutBoxHitBoxMat = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide});
+		var aboutBoxHitBox = new THREE.Mesh(aboutBoxHitBoxGeo, aboutBoxHitBoxMat);
+		aboutBoxHitBox.position.x = 2;
+		aboutBoxHitBox.position.y = 20;
+		aboutBoxHitBox.position.z = 20;
+		//aboutBoxHitBox.rotation.x = Math.PI/4;
+		//aboutBoxHitBox.rotation.z = Math.PI;
+		//aboutBoxHitBox.rotation.y = Math.PI/2;
+		aboutBoxHitBox.lookAt(camera.position);
+		scene.add(aboutBoxHitBox);
+
+
         // add subtle ambient lighting
         var ambientLight = new THREE.AmbientLight(0x0c0c0c);
         scene.add(ambientLight);
-
-        // add spotlight for the shadows
+        
         var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(-40, 60, -10);
-        spotLight.castShadow = true;
+        spotLight.position = camera.position;
+        spotLight.lookAt(aboutBoxHitBox.position);
         scene.add(spotLight);
 
-        // add the output of the renderer to the html element
-
-        // call the render function
         var step = 0;
         renderScene();
 
         function renderScene() {
             stats.update();
 
-            var pCount = particleCount;
+            // var pCount = particleCount;
 
-            while(pCount--)
-            {
-            	//console.log(particles.vertices[pCount]);
-            	if(particles.vertices[pCount].y < -20)
-            	{
-            		particles.vertices[pCount].y = 20;
-            		particlesVelocity[pCount].y = 0;
-            	}
-
-
-            	particlesVelocity[pCount].y -= Math.random();
-
-            	particles.vertices[pCount].add(particlesVelocity[pCount]);
+            // while(pCount--)
+            // {
+            // 	//console.log(particles.vertices[pCount]);
+            // 	if(particles.vertices[pCount].y < -20)
+            // 	{
+            // 		particles.vertices[pCount].y = 20;
+            // 		particlesVelocity[pCount].y = 0;
+            // 	}
 
 
-            	particleSystem.sortParticles = true;
+            // 	particlesVelocity[pCount].y -= Math.random();
 
-            	particleSystem.geometry.__dirtyVertices = true;
+            // 	particles.vertices[pCount].add(particlesVelocity[pCount]);
 
-            }
+
+            // 	particleSystem.sortParticles = true;
+
+            // 	particleSystem.geometry.__dirtyVertices = true;
+
+            // }
 
             //console.log(particles.vertices[3]);
             particleSystem.rotation.y += 0.01;
@@ -233,9 +273,30 @@
 		        camera.position.z = 30;
 	        	camera.position.x += x;
 	        	camera.position.y -= y;
+            	// camera.lookAt(0, 0, 0);
 	        };
-            camera.lookAt(0, 0, 0);
 
+
+            if(rotateCameraToAboutFlag)
+            {
+            	camera.rotation.x += 0.02;
+            	if(camera.rotation.x > Math.PI/3)
+            	{
+            		rotateCameraToAboutFlag = false;
+            	}
+            }
+            
+
+            if(rotateCameraBack)
+            {
+            	camera.rotation.x -= 0.02;
+            	if(camera.rotation.x < 0)
+	            {
+	            	rotateCameraBack = false;
+	            }
+            }
+            
+            
             // render using requestAnimationFrame
             renderer.render(scene, camera);
             requestAnimationFrame(renderScene);
@@ -249,14 +310,25 @@
 
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
-            var intersects = raycaster.intersectObjects([sphere, cylinder, cube]);
+            var intersects = raycaster.intersectObjects([newGameHitBox, aboutHitBox, aboutBoxHitBox]);
 
             if (intersects.length > 0) {
 
-                console.log(intersects[0]);
-
-                intersects[0].object.material.transparent = true;
-                intersects[0].object.material.opacity = 0.1;
+                if(intersects[0].object == newGameHitBox)
+                {
+                	window.location.href = "tempat.html";
+                }
+                else if(intersects[0].object == aboutHitBox)
+                {
+                	console.log(intersects[0].object);
+                	rotateCameraToAboutFlag = true;
+                	// aboutBoxHitBox.lookAt(camera.position);
+                }
+                else if(intersects[0].object == aboutBoxHitBox)
+                {
+                	console.log(intersects[0]);
+                	rotateCameraBack = true;
+                }
             }
         }
 

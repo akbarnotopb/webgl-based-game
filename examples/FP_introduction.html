@@ -115,7 +115,7 @@
 
 		/////////////TEXT////////////////////
 		var loader = new THREE.FontLoader();
-
+		var aboutGroup = new THREE.Group()
 		var text1 = new THREE.Box3();
 		var text2 = new THREE.Box3();
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
@@ -137,7 +137,7 @@
 
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-			var geometry = new THREE.TextBufferGeometry( 'New Game', {
+			var geometry = new THREE.TextBufferGeometry( 'Play Game', {
 				font: font,
 				size: 1.9,
 				height: 0.01,
@@ -179,10 +179,10 @@
 
 			var aboutText = new THREE.Mesh(aboutTextGeo, aboutTextMat);
 			aboutText.position.x = -1;
-			aboutText.position.y = 19;
-			aboutText.position.z = 20;
-			aboutText.lookAt(camera.position);
-			scene.add(aboutText);
+			aboutText.position.y = 20;
+			aboutText.position.z = 22;
+			aboutText.rotation.x = Math.PI/2;
+			aboutGroup.add(aboutText);
 		} );
 
 		/////////////TEXT////////////////////
@@ -217,11 +217,14 @@
 		aboutBoxHitBox.position.x = 2;
 		aboutBoxHitBox.position.y = 20;
 		aboutBoxHitBox.position.z = 20;
+		aboutBoxHitBox.rotation.x = Math.PI/2;
 		//aboutBoxHitBox.rotation.x = Math.PI/4;
 		//aboutBoxHitBox.rotation.z = Math.PI;
 		//aboutBoxHitBox.rotation.y = Math.PI/2;
-		aboutBoxHitBox.lookAt(camera.position);
-		scene.add(aboutBoxHitBox);
+		//aboutBoxHitBox.lookAt(camera.position);
+		aboutGroup.add(aboutBoxHitBox);
+		aboutGroup.lookAt(camera.position);
+		scene.add(aboutGroup);
 
 
         // add subtle ambient lighting
@@ -238,29 +241,6 @@
 
         function renderScene() {
             stats.update();
-
-            // var pCount = particleCount;
-
-            // while(pCount--)
-            // {
-            // 	//console.log(particles.vertices[pCount]);
-            // 	if(particles.vertices[pCount].y < -20)
-            // 	{
-            // 		particles.vertices[pCount].y = 20;
-            // 		particlesVelocity[pCount].y = 0;
-            // 	}
-
-
-            // 	particlesVelocity[pCount].y -= Math.random();
-
-            // 	particles.vertices[pCount].add(particlesVelocity[pCount]);
-
-
-            // 	particleSystem.sortParticles = true;
-
-            // 	particleSystem.geometry.__dirtyVertices = true;
-
-            // }
 
             //console.log(particles.vertices[3]);
             particleSystem.rotation.y += 0.01;
@@ -316,7 +296,7 @@
 
                 if(intersects[0].object == newGameHitBox)
                 {
-                	window.location.href = "tempat.html";
+                	window.location.href = "storyline.html";
                 }
                 else if(intersects[0].object == aboutHitBox)
                 {

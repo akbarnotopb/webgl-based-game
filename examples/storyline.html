@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>bukan rumah, tapi ada kardusnya haha</title>
+    <script type="text/javascript" src="../build/three.js"></script>
+    <script type="text/javascript" src="./js/libs/stats.min.js"></script>
+    <script src="./js/lights/RectAreaLightUniformsLib.js"></script>
+    <video id="video" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+    <!-- <source src="textures/brader.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'> -->
+        </video>
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div id="Stats-output">
+</div>
+
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<!-- Javascript code that runs our Three.js examples -->
+<script type="text/javascript">
+
+    // once everything is loaded, we run our Three.js stuff.
+    function init() {
+        //var stats = initStats();
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.5, 1000);
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer();
+        //renderer.setClearColorHex();
+        renderer.setClearColor(new THREE.Color(0x000000));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.Enabled = true;
+        document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+
+        var wall = new THREE.TextureLoader().load('wall.jpg');
+        //var video = document.getElementById('video');
+        /////////////VIDEO TEXTURE//////////////////
+        video = document.createElement( 'video' );
+        video.src = "textures/brader.mp4";
+        video.load(); // must call after setting/changing source
+        video.play();
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 720;
+        videoImage.height = 720;
+
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+
+
+
+        var videoTexture = new THREE.VideoTexture( video );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTexture.format = THREE.RGBFormat;
+
+        // show axes in the screen
+        //var axes = new THREE.AxesHelper(20);
+        //scene.add(axes);
+        
+        // create the ground plane
+        var planeGeometry = new THREE.PlaneBufferGeometry(50, 50);
+        var planeMaterial = new THREE.MeshStandardMaterial({map: videoTexture, side: THREE.DoubleSide});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+        // rotate and position the plane
+        plane.rotation.y = -0.5 * Math.PI;
+        plane.position.x = 0;
+        plane.position.y = 0;
+        plane.position.z = 0;
+        plane.receiveShadow = true;
+
+        // add the plane to the scene
+        scene.add(plane);
+
+        /////////////////PARTICLES//////////////////////
+        var sprite = new THREE.TextureLoader().load('textures/particle2.png');
+        // create the particle variables
+        var particleCount = 1000;
+        var particles = new THREE.Geometry();
+        var particlesVelocity = []
+
+        var pMaterial = new THREE.PointsMaterial({
+              color: 0x000000,
+              size: 1,
+              map: sprite,
+              blending: THREE.NormalBlending,
+              transparent: true
+            });
+        // now create the individual particles
+        for (var p = 0; p < particleCount; p++) {
+
+          // create a particle with random
+          // position values, -50 -> 50
+          var pX = Math.random() * 100 - 50,
+              pY = Math.random() * 100 - 50,
+              pZ = Math.random() * 100 - 50,
+              particle = new THREE.Vector3(pX, pY, pZ);
+
+          // add it to the geometry
+          particles.vertices.push(particle);
+
+          var tempVelocity = new THREE.Vector3(0, (Math.random()*100 - 50), 0);
+          particlesVelocity.push(tempVelocity);
+        }
+        
+        // create the particle system
+        var particleSystem = new THREE.Points(
+            particles,
+            pMaterial);
+
+        particleSystem.sortParticles = true;
+        // add it to the scene
+        // particleSystem.position.x = 10;
+        // particleSystem.position.z = -15;
+        //console.log(particleSystem);
+        scene.add(particleSystem);
+        ////////////////////////////////////////////////////
+
+
+
+        // position and point the camera to the center of the scene
+        camera.position.x = 75;
+        camera.position.y = 0;
+        camera.position.z = 0;
+        camera.lookAt(scene.position);
+        var skipAdGroup = new THREE.Group();
+        var loader = new THREE.FontLoader();
+
+        ///////////////SKIP BUTTON//////////////////////
+        loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+            var geometry = new THREE.TextBufferGeometry( 'Skip Ad >>', {
+                font: font,
+                size: 1.9,
+                height: 0.01,
+            } );
+            var material = new THREE.MeshBasicMaterial({color: 0xffffff
+            })
+
+            var text = new THREE.Mesh(geometry, material);
+            text.position.z = -15;
+            text.position.x = 5;
+            text.rotation.y = Math.PI/2;
+            skipAdGroup.add(text);
+        } );
+
+        ///////////////HITBOXES///////////////////
+        var skipHitBoxGeo = new THREE.BoxBufferGeometry(15, 4, 0.01);
+        var skipHitBoxMat = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 1});
+        var skipHitBox = new THREE.Mesh(skipHitBoxGeo, skipHitBoxMat);
+        skipHitBox.position.x = 5;
+        skipHitBox.position.z = -21;
+        skipHitBox.position.y = 1;
+        skipHitBox.rotation.y = Math.PI/2;
+        //skipHitBox.lookAt(camera.position);
+        skipAdGroup.add(skipHitBox);
+        skipAdGroup.position.z += 5;
+        skipAdGroup.position.y -= 10;
+
+        ////lights/////////////////
+		var spotLight = new THREE.SpotLight(0x888888);
+        spotLight.position.set(30, 0, 0);
+        spotLight.castShadow = true;
+        //scene.add(spotLight);
+
+        var spotLightHelper = new THREE.SpotLightHelper(spotLight);
+        //sscene.add(spotLightHelper);
+		
+        var ambient = new THREE.AmbientLight(0x888888);
+        scene.add(ambient);
+        
+		var rectLight = new THREE.RectAreaLight( 0xffffff, 50, 10, 10 );
+		rectLight.position.set( 80, 0, 0 );
+		rectLight.lookAt( 0, 0, 0 );
+		
+
+		rectLightHelper = new THREE.RectAreaLightHelper( rectLight );
+		scene.add( rectLightHelper );
+
+		var rectLightMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry(), new THREE.MeshBasicMaterial() );
+		rectLightMesh.scale.x = rectLight.width;
+		rectLightMesh.scale.y = rectLight.height;
+		rectLight.add( rectLightMesh );
+
+		var rectLightMeshBack = new THREE.Mesh( new THREE.PlaneBufferGeometry(), new THREE.MeshBasicMaterial( { color: 0x080808 } ) );
+		rectLightMeshBack.rotation.y = Math.PI;
+		rectLightMesh.add( rectLightMeshBack );
+
+        // add the output of the renderer to the html element
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+        //////////////////////
+        var step = 0;
+        var step2= 0;
+        var step3= 0;
+        var cameraStep = 0;
+        var cubeStep = 0;
+        var toggleCamera = 0;
+        var spotLightStep = 0;
+
+        var nice = function()
+        {
+            scene.add(rectLight);
+            scene.add(spotLight);
+        }
+
+        var notnice = function()
+        {
+            scene.remove(rectLight);
+            scene.remove(spotLight);
+        }
+        var nicer = function()
+        {
+            scene.add(rectLight);
+            scene.add(spotLight);
+        }
+        var skipAds = function()
+        {
+            scene.add(skipAdGroup);
+        }
+
+        setTimeout(nice, 500);
+        setTimeout(notnice, 1000);
+        setTimeout(nicer, 2000);
+        setTimeout(skipAds, 5000);
+        
+        renderScene();
+
+        function renderScene() {
+            
+            window.onmousemove = function(event)
+            {
+                var x = (event.clientX/window.innerWidth - 0.5)*5;
+                var y = (event.clientY/window.innerHeight - 0.5)*5;
+                camera.position.x = 75;
+                camera.position.y = 0;
+                camera.position.z = 0;
+                camera.position.z += x;
+                camera.position.y -= y;
+                //camera.lookAt(0, 0, 0);
+            };
+
+            particleSystem.rotation.y += 0.01;
+
+            requestAnimationFrame(renderScene);
+            renderer.render(scene, camera);
+        }
+        
+        function onDocumentMouseDown(event) {
+
+            var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
+            vector = vector.unproject(camera);
+
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+            var intersects = raycaster.intersectObjects([skipHitBox]);
+
+            if (intersects.length > 0) {
+
+                if(intersects[0].object == skipHitBox)
+                {
+                    window.location.href = "index.html";
+                }
+                // else if(intersects[0].object == aboutHitBox)
+                // {
+                //     console.log(intersects[0].object);
+                //     rotateCameraToAboutFlag = true;
+                //     // aboutBoxHitBox.lookAt(camera.position);
+                // }
+                // else if(intersects[0].object == aboutBoxHitBox)
+                // {
+                //     console.log(intersects[0]);
+                //     rotateCameraBack = true;
+                // }
+            }
+        }
+        
+
+    }
+    window.onload = init;
+</script>
+</body>
+</html>

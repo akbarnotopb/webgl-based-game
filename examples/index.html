@@ -56,8 +56,10 @@
                 scene.add( directionalLight );
 
                 objectLoader = new THREE.ObjectLoader().load("models/desk.json",function(obj){
+                         obj.position.x=-50;
                         objects.push(obj);
-                        controls = new THREE.PointerLockControls( camera, 100, 3, true, objects );
+
+                        controls = new THREE.PointerLockControls( camera, 50, 3, true, objects );
                         scene.add( controls.getPlayer() );
                         scene.add(obj);
                         loaded=true;   
@@ -74,12 +76,17 @@
                 objects.push( floorMesh );
                 scene.add( floorMesh  );
 
-                var geometry = new THREE.BoxBufferGeometry( 50, 50, 50 );
-                var material = new THREE.MeshBasicMaterial();
+
+
+                //overlay imported object using mesh, but set it to invisible
+                var geometry = new THREE.BoxBufferGeometry( 6, 50, 6 );
+                var material = new THREE.MeshBasicMaterial({visible:false});
                 mesh = new THREE.Mesh( geometry, material );
-                mesh.position.x=50;
+                mesh.position.x=-50;
                 objects.push(mesh);
                 scene.add( mesh );
+
+
 
 
 

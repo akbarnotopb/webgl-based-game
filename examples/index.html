@@ -38,12 +38,16 @@
             var loaded;
             var controls;
             var objectLoader;
+            var raycaster;
             var overlayinit=false;
+            var mouse=new THREE.Vector2(), INTERSECTED;
+            var overlaydesk;
             init();
 
             function init(){
                 eventHandlers();
                 loaded=false;
+                
                 camera = new THREE.PerspectiveCamera(80,window.innerWidth/ window.innerHeight, 1 , 9000);
 
                 scene = new THREE.Scene();
@@ -63,16 +67,16 @@
                          obj.scale.set(3,3,3);
                         objects.push(obj);
 
-                        controls = new THREE.PointerLockControls( camera, 50, 3, true, objects );
+                        controls = new THREE.PointerLockControls( camera, 50, 15, true, objects );
                         scene.add( controls.getPlayer() );
                         scene.add(obj);
                         loaded=true;   
 
-                        //boundingboxhelper for the object
-                        var bbox = new THREE.BoundingBoxHelper(obj);
-                        bbox.update();
-                        bboxes.push(bbox);
-                        scene.add(bbox);
+                        // //boundingboxhelper for the object
+                        // var bbox = new THREE.BoundingBoxHelper(obj);
+                        // bbox.update();
+                        // bboxes.push(bbox);
+                        // scene.add(bbox);
                 });
 
                         // Floor
@@ -81,7 +85,7 @@
                 // geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
                 var geometry = new THREE.BoxGeometry(7000,1,7000); //change floor to flat(useing box)
 
-                var material = new THREE.MeshLambertMaterial( );
+                var material = new THREE.MeshBasicMaterial();
 
                 floorMesh = new THREE.Mesh( geometry, material );
                 objects.push( floorMesh );
@@ -90,12 +94,20 @@
 
 
                 //overlay imported object using mesh, but set it to invisible
-                var geometry = new THREE.BoxBufferGeometry( 6, 50, 6 );
-                var material = new THREE.MeshBasicMaterial({visible:false});
+                var geometry = new THREE.BoxBufferGeometry( 8, 50, 6 );
+                var material = new THREE.MeshBasicMaterial({color:0x00ffff,visible:true});
                 mesh = new THREE.Mesh( geometry, material );
                 mesh.position.x=-50;
                 objects.push(mesh);
                 scene.add( mesh );
+                overlaydesk=mesh;
+
+                var planegeo = new THREE.PlaneGeometry(10,10,1);
+                var material = new THREE.MeshBasicMaterial({color:0xff00ff,visible:true});
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.y=10;
+                objects.push(mesh);
+                scene.add( mesh );              
 
 
                toggleBoundingBoxes = function(bool) {
@@ -114,7 +126,9 @@
                 renderer.setPixelRatio( window.devicePixelRatio );
                 renderer.setSize( window.innerWidth, window.innerHeight );
                 document.body.appendChild( renderer.domElement );
-
+                raycaster= new THREE.Raycaster();
+                raycaster.far=15;
+                console.log(raycaster);
                 render();
             }
 
@@ -127,10 +141,28 @@
                     if(!overlayinit){
                         ScreenOverlay(controls);
                         overlayinit=true;
+                        arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
                     }
+                    scene.remove ( arrow );
+                    arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
+                    scene.add( arrow );
                 }
+                onRaycast();
                 requestAnimationFrame(render);
             }
+
+
+            function onRaycast(){
+                console.log(raycaster);
+                raycaster.setFromCamera( mouse, camera );
+                var intersects = raycaster.intersectObjects( scene.children );
+                if ( intersects.length > 0 ) {
+                    if ( overlaydesk== intersects[ 0 ].object ) {
+                        intersects[0].object.material.color.setHex(0x000000);
+                    }
+                }
+            }
+
 
             function eventHandlers() {
 
@@ -140,9 +172,11 @@
                 document.addEventListener( 'keydown', onKeyDown, false );
                 document.addEventListener( 'keyup', onKeyUp, false );
 
+
                 // Resize Event
                 window.addEventListener( 'resize', onWindowResize, false );
             }
+
                 // HANDLE KEY INTERACTION
                 function handleKeyInteraction(keyCode, boolean) {
                     var isKeyDown = boolean;

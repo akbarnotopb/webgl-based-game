@@ -31,6 +31,8 @@
         function startGame(){
 
             var objects=[];
+            var bboxes=[];
+            var boundingBoxesActive = true;
             var camera;
             var scene;
             var loaded;
@@ -55,20 +57,29 @@
                 directionalLight.position.set( 0, 0, 1 ).normalize();
                 scene.add( directionalLight );
 
+
                 objectLoader = new THREE.ObjectLoader().load("models/desk.json",function(obj){
                          obj.position.x=-50;
+                         obj.scale.set(3,3,3);
                         objects.push(obj);
 
                         controls = new THREE.PointerLockControls( camera, 50, 3, true, objects );
                         scene.add( controls.getPlayer() );
                         scene.add(obj);
                         loaded=true;   
+
+                        //boundingboxhelper for the object
+                        var bbox = new THREE.BoundingBoxHelper(obj);
+                        bbox.update();
+                        bboxes.push(bbox);
+                        scene.add(bbox);
                 });
 
                         // Floor
-                var floorHeight = 7000;
-                geometry = new THREE.SphereGeometry(floorHeight, 10, 6, 0, (Math.PI * 2), 0, 0.8);
-                geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
+                // var floorHeight = 7000;
+                // geometry = new THREE.SphereGeometry(floorHeight, 10, 6, 0, (Math.PI * 2), 0, 0.8);
+                // geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
+                var geometry = new THREE.BoxGeometry(7000,1,7000); //change floor to flat(useing box)
 
                 var material = new THREE.MeshLambertMaterial( );
 
@@ -87,7 +98,15 @@
                 scene.add( mesh );
 
 
-
+               toggleBoundingBoxes = function(bool) {
+                  if(bool){
+                    var state = !boundingBoxesActive;
+                    for (i in bboxes) {
+                        bboxes[i].visible = state;
+                    }
+                    boundingBoxesActive = state;
+                  }
+                }
 
 
                 renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -98,6 +117,8 @@
 
                 render();
             }
+
+
 
             function render(){
                 renderer.render(scene,camera);
@@ -159,9 +180,15 @@
 
                         case 67: // crouch (CTRL + W etc destroys tab in Chrome!)
                             controls.crouch(boolean);
+                            break;
+
+                        case 66: // b
+                            toggleBoundingBoxes(boolean);
 
                     }
                 }
+
+                
 
                 function onWindowResize() {
 

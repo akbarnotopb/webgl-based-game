@@ -101,7 +101,7 @@
                 var material = new THREE.MeshBasicMaterial({color:0x00ffff,visible:true});
                 var mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.x=-50;
-                mesh.name="objectbox";
+                mesh.name="box biru";
                 mesh.bcolor = 0x00ffff;
                 mesh.outlineid = 0;
                 objects.push(mesh);
@@ -201,6 +201,21 @@
 
             }
 
+            function interact() {
+                
+                raycaster.setFromCamera( mouse, camera );
+                intersects = raycaster.intersectObjects( scene.children );
+                // var intersects = raycaster.intersectObjects(objects, true);
+                if (intersects.length > 0) {
+                    for (i in selectableObjects){
+                        if( selectableObjects[i]== intersects[0].object ){
+                            selectedObject = intersects[0].object;
+                            alert(selectedObject.name + " object selected!");
+                        }
+                    }
+                }
+            }
+
 
             function eventHandlers() {
 
@@ -256,6 +271,10 @@
 
                         case 66: // b
                             toggleBoundingBoxes(boolean);
+                            break;
+
+                        case 73: // i
+                            interact();
 
                     }
                 }

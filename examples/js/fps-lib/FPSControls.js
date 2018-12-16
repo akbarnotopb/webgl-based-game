@@ -289,12 +289,12 @@ THREE.PointerLockControls = function ( camera, mass, playerHeight, doubleJump, w
 				scope.crouching = false;
 
 				if (scope.jumps === 0 && !scope.isBelowObject) {
-					scope.velocity.y += scope.jumpFactor * 2.3;
+					scope.velocity.y += scope.jumpFactor * 1.2;
 					scope.velocity.z *= 2; // Jumping also increases our forward velocity a little
 					scope.jumps = 1;
 				}
 				else if (scope.doubleJump && scope.jumps === 1 && !scope.isOnObject && !scope.isBelowObject) {
-					scope.velocity.y += scope.jumpFactor * 1.5;
+					scope.velocity.y += scope.jumpFactor * 0.8;
 					scope.jumps = 2;
 				}
 

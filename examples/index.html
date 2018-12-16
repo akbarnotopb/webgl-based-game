@@ -89,11 +89,13 @@
                 // var floorHeight = 7000;
                 // geometry = new THREE.SphereGeometry(floorHeight, 10, 6, 0, (Math.PI * 2), 0, 0.8);
                 // geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
-                var geometry = new THREE.BoxGeometry(7000,1,7000); //change floor to flat(useing box)
+                //var geometry = new THREE.BoxGeometry(500,1,500); //change floor to flat(useing box)
+                var geometry = new THREE.PlaneGeometry(500,500); //change floor to flat(using plane)
 
                 var material = new THREE.MeshBasicMaterial();
 
                 floorMesh = new THREE.Mesh( geometry, material );
+                floorMesh.rotation.x = -Math.PI / 2;
                 objects.push( floorMesh );
                 scene.add( floorMesh  );
 
@@ -131,65 +133,40 @@
                   }
                 }
 
-                var i;
-                var def=5;
-                var iter=def;
-
                 var planegeo = new THREE.PlaneGeometry(10,10,1);
                 var material = new THREE.MeshBasicMaterial({color:0x0000ff,visible:true});
                 
-                //depan
-                for(i=0; i<5; i++) {
-                    mesh = new THREE.Mesh( planegeo, material );
-                    mesh.position.set(iter,0,-100);
-                    mesh.scale.x=30;
-                    mesh.scale.y=10;
-                    objects.push(mesh);
-                    scene.add( mesh );
-                    iter-=1;                    
-                }
-
-                //kiri
-                iter=def;
-
-                for(i=0; i<5; i++) {
-                    mesh = new THREE.Mesh( planegeo, material );
-                    mesh.position.set(-140,iter,-40);
-                    mesh.rotation.set(0, Math.PI / 2, 0);
-                    mesh.scale.x=30;
-                    mesh.scale.y=10;
-                    objects.push(mesh);
-                    scene.add( mesh );
-                    iter-=1;                    
-                }
-
-                
-                iter=0;
-
-                for(i=0; i<5; i++) {
-                    mesh = new THREE.Mesh( planegeo, material );
-                    mesh.position.set(iter,0,100);
-                    mesh.rotation.set(0, Math.PI, 0);
-                    mesh.scale.x=30;
-                    mesh.scale.y=10;
-                    objects.push(mesh);
-                    scene.add( mesh );
-                    iter+=1;                    
-                }
-
-            
-                iter=0;
-
-                for(i=0; i<5; i++) {
-                    mesh = new THREE.Mesh( planegeo, material );
-                    mesh.position.set(140,iter,40);
-                    mesh.rotation.set(0, - Math.PI / 2, 0);
-                    mesh.scale.x=30;
-                    mesh.scale.y=10;
-                    objects.push(mesh);
-                    scene.add( mesh );
-                    iter+=1;                    
-                }
+                //tembok depan
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.set(0,0,-100);
+                mesh.scale.x=30;
+                mesh.scale.y=10;
+                objects.push(mesh);
+                scene.add( mesh );
+                //tembok kiri
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.set(-140,0,-40);
+                mesh.rotation.set(0, Math.PI / 2, 0);
+                mesh.scale.x=30;
+                mesh.scale.y=10;
+                objects.push(mesh);
+                scene.add( mesh );
+                //tembok belakang
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.set(0,0,100);
+                mesh.rotation.set(0, Math.PI, 0);
+                mesh.scale.x=30;
+                mesh.scale.y=10;
+                objects.push(mesh);
+                scene.add( mesh );
+                //tembok kanan
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.set(140,0,40);
+                mesh.rotation.set(0, - Math.PI / 2, 0);
+                mesh.scale.x=30;
+                mesh.scale.y=10;
+                objects.push(mesh);
+                scene.add( mesh );
 
 
 

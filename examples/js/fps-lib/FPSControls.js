@@ -209,6 +209,7 @@ THREE.PointerLockControls = function ( camera, mass, playerHeight, doubleJump, w
 		// Check change and if Walking?
 		scope.delta = (scope.walking) ? ( scope.time - scope.prevTime ) / scope.walkingSpeed : ( scope.time - scope.prevTime ) / scope.speed;
 		var validDelta = isNaN(scope.delta) === false;
+		const center = new THREE.Vector3();
 		if (validDelta) {
 
 			// Velocities
@@ -216,7 +217,7 @@ THREE.PointerLockControls = function ( camera, mass, playerHeight, doubleJump, w
 			scope.velocity.z -= scope.velocity.z * 8.0 * scope.delta; // Forward and back
 			scope.velocity.y -= (scope.walking) ?  9.8 * scope.mass * scope.delta : 5.5 * scope.mass * scope.delta;  // Up and Down
 
-			scope.camDir = scope.getPlayer().getWorldDirection().negate(); //
+			scope.camDir = scope.getPlayer().getWorldDirection( center ).negate(); //
 			scope.playersPosition = scope.getPlayer().position.clone();
 
 			scope.raycasters.updateRaycasters();

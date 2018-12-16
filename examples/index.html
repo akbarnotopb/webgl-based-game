@@ -64,23 +64,26 @@
                 scene.add( directionalLight );
 
 
-                objectLoader = new THREE.ObjectLoader().load("models/desk.json",function(obj){
-                         obj.position.x=-50;
-                         obj.scale.set(3,3,3);
-                        objects.push(obj);
+                objectLoader = new THREE.ObjectLoader();
+                objectLoader.load("models/desk.json",function(obj){
+                    obj.position.set(30,0,70);
+                    obj.scale.set(3,3,3);
+                    objects.push(obj);
+                    scene.add(obj);
 
-                        controls = new THREE.PointerLockControls( camera, 50, 15, true, objects );
-                        scene.add( controls.getPlayer() );
-                        scene.add(obj);
-                        loaded=true;   
+                    //boundingboxhelper for the object
+                    var bbox = new THREE.BoxHelper(obj);
+                    bbox.update();
+                    bbox.visible=boundingBoxesActive;
+                    bboxes.push(bbox);
+                    scene.add(bbox);
 
-                        //boundingboxhelper for the object
-                        var bbox = new THREE.BoundingBoxHelper(obj);
-                        bbox.update();
-                        bbox.visible=boundingBoxesActive;
-                        bboxes.push(bbox);
-                        scene.add(bbox);
+
                 });
+
+                controls = new THREE.PointerLockControls( camera, 50, 15, true, objects );
+                scene.add( controls.getPlayer() );
+                loaded=true;   
 
                         // Floor
                 // var floorHeight = 7000;
@@ -113,10 +116,8 @@
                 var outlineMesh = new THREE.Mesh( boxgeometry, outlineMaterial );
                 outlineMesh.position.x=-50
                 outlineMesh.scale.multiplyScalar(1.05);
-                outlineMesh.material.transparent=true;
-                outlineMesh.material.opacity = 0;
                 outlines.push(outlineMesh);
-                //outlineMesh.visible=false;
+                outlineMesh.visible=false;
                 scene.add( outlineMesh );            
 
 
@@ -232,7 +233,7 @@
 
                     for (i in selectableObjects){
                         if( selectableObjects[i]== intersects[0].object ){
-                            outlines[intersects[0].object.outlineid].material.opacity=1;
+                            outlines[intersects[0].object.outlineid].visible=true;
                             flag=true;
                         }
                     }
@@ -248,7 +249,7 @@
                 }
                 if(!flag){
                     for (i in outlines){
-                        outlines[i].material.opacity=0;
+                        outlines[i].visible=false;
                     }
                 }
 

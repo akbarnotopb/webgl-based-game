@@ -77,8 +77,6 @@
                     bbox.visible=boundingBoxesActive;
                     bboxes.push(bbox);
                     scene.add(bbox);
-
-
                 });
 
                 controls = new THREE.PointerLockControls( camera, 50, 15, true, objects );
@@ -86,10 +84,6 @@
                 loaded=true;   
 
                         // Floor
-                // var floorHeight = 7000;
-                // geometry = new THREE.SphereGeometry(floorHeight, 10, 6, 0, (Math.PI * 2), 0, 0.8);
-                // geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
-                //var geometry = new THREE.BoxGeometry(500,1,500); //change floor to flat(useing box)
                 var geometry = new THREE.PlaneGeometry(500,500); //change floor to flat(using plane)
                 var texture = new THREE.TextureLoader().load( "textures/floor.jpg" );
                 texture.wrapS = THREE.RepeatWrapping;
@@ -217,16 +211,7 @@
                             outlines[intersects[0].object.outlineid].visible=true;
                             flag=true;
                         }
-                    }
-                    
-                    // if ( overlaydesk== intersects[ 0 ].object ) {
-                    //     //intersects[0].object.material.color.setHex(0x000000);
-                    //     // intersects[0].object.material.opacity=1;
-                    //     outlines[intersects[0].object.outlineid].material.opacity=1;
-                    //     flag=true;
-                    //     //alert(intersects[0].object.name + "on raycast!");
-                    // }
-                    
+                    } 
                 }
                 if(!flag){
                     for (i in outlines){

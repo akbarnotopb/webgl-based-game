@@ -251,8 +251,8 @@ THREE.PointerLockControls = function ( camera, mass, playerHeight, doubleJump, w
 
 			if (!crouched && scope.isOnObject) {
 				console.log("Not Crouched");
-				halfHeight = scope.getPlayer().position.y - (playerHeight * 0.2);
-				fullHeight = scope.getPlayer().position.y + (playerHeight * 0.2);
+				halfHeight = scope.getPlayer().position.y - (playerHeight * 0.5);
+				fullHeight = scope.getPlayer().position.y + (playerHeight * 0.5);
 			}
 
 			if (scope.crouching && scope.isOnObject) {

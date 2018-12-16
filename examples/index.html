@@ -91,8 +91,12 @@
                 // geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -floorHeight, 0) );
                 //var geometry = new THREE.BoxGeometry(500,1,500); //change floor to flat(useing box)
                 var geometry = new THREE.PlaneGeometry(500,500); //change floor to flat(using plane)
+                var texture = new THREE.TextureLoader().load( "textures/floor.jpg" );
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set( 10, 10 );
 
-                var material = new THREE.MeshBasicMaterial();
+                var material = new THREE.MeshBasicMaterial({ map : texture });
 
                 floorMesh = new THREE.Mesh( geometry, material );
                 floorMesh.rotation.x = -Math.PI / 2;

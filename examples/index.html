@@ -136,14 +136,14 @@
                 
                 //tembok depan
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,0,-100);
+                mesh.position.set(0,0,-50);
                 mesh.scale.x=30;
                 mesh.scale.y=10;
                 objects.push(mesh);
                 scene.add( mesh );
                 //tembok kiri
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(-140,0,-40);
+                mesh.position.set(-100,0,-40);
                 mesh.rotation.set(0, Math.PI / 2, 0);
                 mesh.scale.x=30;
                 mesh.scale.y=10;
@@ -159,7 +159,7 @@
                 scene.add( mesh );
                 //tembok kanan
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(140,0,40);
+                mesh.position.set(100,0,40);
                 mesh.rotation.set(0, - Math.PI / 2, 0);
                 mesh.scale.x=30;
                 mesh.scale.y=10;

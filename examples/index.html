@@ -166,6 +166,14 @@
                 objects.push(mesh);
                 scene.add( mesh );
 
+                var material = new THREE.MeshBasicMaterial({color:0x6f6f6f,visible:true});
+                mesh = new THREE.Mesh( planegeo, material );
+                mesh.position.set(0,100,0);
+                mesh.rotation.set(Math.PI/2,0,0);
+                mesh.scale.x=80;
+                mesh.scale.y=60;
+                objects.push(mesh);
+                scene.add( mesh );
 
 
                 renderer = new THREE.WebGLRenderer({ antialias: true });

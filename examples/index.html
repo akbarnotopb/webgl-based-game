@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
     <script type="text/javascript" src="../build/three.js"></script>
     <script type="text/javascript" src="./js/libs/stats.min.js"></script>
     <script type="text/javascript" src="./js/fps-lib/FPSControls.js"></script>
@@ -65,19 +65,80 @@
 
 
                 objectLoader = new THREE.ObjectLoader();
-                objectLoader.load("models/desk.json",function(obj){
-                    obj.position.set(30,0,70);
-                    obj.scale.set(3,3,3);
+
+
+                //lampu meja
+                objectLoader.load("models/desklamp.json",function(obj){
+                    obj.scale.set(70,70,70);
+                    obj.position.set(-55,9,58);
+                    obj.rotation.y=-1.2;
                     objects.push(obj);
                     scene.add(obj);
 
-                    //boundingboxhelper for the object
-                    var bbox = new THREE.BoxHelper(obj);
-                    bbox.update();
-                    bbox.visible=boundingBoxesActive;
-                    bboxes.push(bbox);
-                    scene.add(bbox);
                 });
+
+
+                //meja belajar minimalis
+                var mejangambang = new THREE.BoxGeometry( 13, 1, 45 );
+                var material = new THREE.MeshBasicMaterial({color:0x00ffff,visible:true});
+                var mesh = new THREE.Mesh( mejangambang, material );
+                mesh.position.z=80;
+                mesh.position.y=8;
+                mesh.position.x=-6.7;
+                scene.add(mesh);
+
+                //kursi
+                objectLoader.load("models/chair.json",function(obj){
+                    obj.position.set(-15,0,70);
+                    obj.scale.set(0.2,0.15,0.2);
+                    obj.rotation.y=-1.6;
+                    objects.push(obj);
+                    scene.add(obj);
+
+                });
+
+
+                //kasur
+                objectLoader.load("models/bed.json",function(obj){
+                    obj.position.set(-71,0,85);
+                    obj.scale.set(8,6,8);
+                    objects.push(obj);
+                    scene.add(obj);
+                });
+
+
+                //kasur
+                objectLoader.load("models/wardrobe.json",function(obj){
+                    obj.position.set(-33,8,40);
+                    obj.scale.set(20,20,20);
+                    objects.push(obj);
+                    scene.add(obj);
+                });
+
+
+
+
+                /* RUANG TAMU*/
+                //meja deket sofa
+                objectLoader.load("models/desk.json",function(obj){
+                    obj.position.set(45,0,50);
+                    obj.scale.set(3,2.5,3);
+                    objects.push(obj);
+                    scene.add(obj);
+
+                });
+
+
+                // sofa
+                objectLoader.load("models/sofa.json",function(obj){
+                    obj.position.set(70,0,70);
+                    obj.scale.set(1.7,2.5,1.7);
+                    objects.push(obj);
+                    scene.add(obj);
+                });
+
+
+
 
                 controls = new THREE.PointerLockControls( camera, 50, 15, true, objects );
                 scene.add( controls.getPlayer() );
@@ -216,7 +277,6 @@
                 document.body.appendChild( renderer.domElement );
                 raycaster= new THREE.Raycaster();
                 raycaster.far=15;
-                console.log(raycaster);
                 render();
             }
 
@@ -241,7 +301,6 @@
 
 
             function onRaycast(){
-                console.log(raycaster);
                 raycaster.setFromCamera( mouse, camera );
                 var intersects = raycaster.intersectObjects( scene.children );
                 var flag=false;

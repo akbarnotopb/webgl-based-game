@@ -43,13 +43,12 @@
             var raycaster;
             var overlayinit=false;
             var mouse=new THREE.Vector2(), INTERSECTED;
-            var overlaydesk;
             init();
-
+            var visibleoverlay=false;
             function init(){
                 eventHandlers();
                 loaded=false;
-                
+                visibleoverlay=false;
                 camera = new THREE.PerspectiveCamera(80,window.innerWidth/ window.innerHeight, 1 , 9000);
 
                 scene = new THREE.Scene();
@@ -125,9 +124,34 @@
                     obj.scale.set(0.2,0.2,0.2);
                     // obj.rotation.y=3.15;
                     scene.add(obj);
-                });   
+                });
 
 
+
+
+
+
+
+                var switchlamputamu = new THREE.BoxBufferGeometry( 0.3, 1, 1 );
+                var material = new THREE.MeshStandardMaterial({color:0xffffff,visible:true});
+                var mesh = new THREE.Mesh( switchlamputamu, material );
+                mesh.name='lamputamu'
+                mesh.rotation.x=1.57;
+                mesh.position.z=25;
+                mesh.position.y=17;
+                mesh.position.x=1;
+                scene.add(mesh);
+
+
+                var switchlampukamar = new THREE.BoxBufferGeometry( 0.3, 1, 1 );
+                var material = new THREE.MeshStandardMaterial({color:0xffffff,visible:true});
+                var mesh = new THREE.Mesh( switchlampukamar, material );
+                mesh.name='lampukamar'
+                mesh.rotation.x=1.57;
+                mesh.position.z=25;
+                mesh.position.y=17;
+                mesh.position.x=-1;
+                scene.add(mesh);
 
 
 
@@ -207,18 +231,120 @@
 
 
 
+
+
+
+
+
+
+
                 //overlay imported object using mesh, but set it to invisible
-                var boxgeometry = new THREE.BoxBufferGeometry( 8, 50, 6 );
-                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry( 5, 80, 25 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-95;
+                mesh.position.z=23;
+                mesh.name="Wardrobe";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 50, 40, 20 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-70;
+                mesh.position.z=75;
+                mesh.name="bed";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 9, 20, 7 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-6;
+                mesh.position.y=20;
+                mesh.position.z=83;
+                mesh.name="desk-lamp";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 9, 20, 22 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-6;
+                mesh.position.y=20;
+                mesh.position.z=66;
+                mesh.name="desk";
+                objects.push(mesh);
+                scene.add( mesh );
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 6, 20, 5 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-15;
+                mesh.position.y=20;
+                mesh.position.z=66;
+                mesh.name="chair";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 30, 20, 0.5 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
                 var mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.x=-50;
-                mesh.name="box biru";
-                mesh.bcolor = 0x00ffff;
-                mesh.outlineid = 0;
+                mesh.position.y=25;
+                mesh.position.z=-10;
+                mesh.name="twin-pict";
                 objects.push(mesh);
-                selectableObjects.push(mesh); //push jika object = selectable
                 scene.add( mesh );
-                overlaydesk=mesh;
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 30, 15, 0.5 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=50;
+                mesh.position.y=30;
+                mesh.position.z=-10;
+                mesh.name="tipi";
+                objects.push(mesh);
+                scene.add( mesh );
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 40, 15, 15 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=58;
+                mesh.position.y=15;
+                mesh.position.z=70;
+                mesh.name="sofa1";
+                objects.push(mesh);
+                scene.add( mesh );
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 10, 15, 15 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=73;
+                mesh.position.y=15;
+                mesh.position.z=55;
+                mesh.name="sofa2";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 10, 15, 10 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=48;
+                mesh.position.y=15;
+                mesh.position.z=50;
+                mesh.name="sofa2";
+                objects.push(mesh);
+                scene.add( mesh );
+
+
+
                 //OUTLINE MESH UNTUK SELECTABLE OBJECT
                 var outlineMaterial = new THREE.MeshStandardMaterial( { color: 0x00ff00, side: THREE.BackSide } );
                 var outlineMesh = new THREE.Mesh( boxgeometry, outlineMaterial );

@@ -61,10 +61,55 @@
                 var ambient = new THREE.AmbientLight( 0x444444 );
                 scene.add( ambient );
                 // instantiate a loader
-                var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-                directionalLight.position.set( 0, 0, 1 ).normalize();
-                scene.add( directionalLight );
+                // var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+                // directionalLight.position.set( 0, 0, 1 ).normalize();
+                // scene.add( directionalLight );
+    //             var spotLight = new THREE.SpotLight( 0xffffff, 1 );
+				// spotLight.castShadow = true;
+				// spotLight.shadow.mapSize.width = 50;
+				// spotLight.shadow.mapSize.height = 50;
+				// spotLight.position.set(-50, 50, 50);
+				// scene.add(spotLight);
 
+    //             var rectLight = new THREE.RectAreaLight( 0xffffff, 50);
+    //             var rectLightGeometry = new THREE.BoxBufferGeometry(10, 10 , 0.01);
+				// var rectLightMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+				// var rectLightSquare = new THREE.Mesh(rectLightGeometry, rectLightMaterial);
+
+				// rectLight.add(rectLightSquare);
+				// rectLight.position.set( -50, 50, 50 );
+				// rectLight.rotation.x = Math.PI/2;
+				
+
+				// scene.add( rectLight );
+
+				// var spotLightHelper = new THREE.SpotLightHelper( spotLight );
+				// scene.add( spotLightHelper );
+				// rectLightHelper = new THREE.RectAreaLightHelper( rectLight );
+				// scene.add( rectLightHelper );
+
+				var pointLight1 = new THREE.PointLight( 0xffffff, 2, 100 );
+				pointLight1.position.set(-50, 58, 40 );
+				pointLight1.castShadow = true;
+				scene.add( pointLight1 );
+				pointLight1.shadow.mapSize.width = 512;  // default
+				pointLight1.shadow.mapSize.height = 512; // default
+				pointLight1.shadow.camera.near = 0.5;       // default
+				pointLight1.shadow.camera.far = 500      // default
+
+
+				var pointLight2 = new THREE.PointLight( 0xffffff, 2, 100 );
+				pointLight2.position.set(50, 58, 40 );
+				pointLight2.castShadow = true;
+				scene.add( pointLight2 );
+				pointLight2.shadow.mapSize.width = 512;  // default
+				pointLight2.shadow.mapSize.height = 512; // default
+				pointLight2.shadow.camera.near = 0.5;       // default
+				pointLight2.shadow.camera.far = 500      // default
+
+				// var sphereSize = 1;
+				// var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+				// scene.add( pointLightHelper );
 
                 objectLoader = new THREE.ObjectLoader();
 
@@ -86,6 +131,8 @@
                 mesh.position.z=75;
                 mesh.position.y=8;
                 mesh.position.x=-6.7;
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
                 scene.add(mesh);
 
                 //kursi
@@ -93,6 +140,7 @@
                     obj.position.set(-15,0,65);
                     obj.scale.set(0.2,0.15,0.2);
                     obj.rotation.y=-1.6;
+                    obj.castShadow = true;
                     scene.add(obj);
 
                 });
@@ -102,6 +150,7 @@
                 objectLoader.load("models/bed.json",function(obj){
                     obj.position.set(-71,0,75);
                     obj.scale.set(8,6,8);
+                    obj.castShadow = true;
                     scene.add(obj);
                 });
 
@@ -111,6 +160,7 @@
                     obj.position.set(-97,11,15);
                     obj.rotation.y=0.593
                     obj.scale.set(8,12,11);
+                    obj.castShadow = true;
                     scene.add(obj);
                 });
 
@@ -119,6 +169,7 @@
                     obj.position.set(-50,25,-9);
                     obj.scale.set(3,3,3);
                     obj.rotation.y=3.15;
+                    obj.castShadow = true;
                     scene.add(obj);
                 });
 
@@ -127,6 +178,7 @@
                     obj.position.set(-50,60,40);
                     obj.scale.set(0.2,0.2,0.2);
                     // obj.rotation.y=3.15;
+                    obj.castShadow = true;
                     scene.add(obj);
                 });
 
@@ -140,11 +192,14 @@
                 var material = new THREE.MeshStandardMaterial({color:0xffffff,visible:true});
                 var mesh = new THREE.Mesh( switchlamputamu, material );
                 mesh.name='lamputamu'
-                mesh.rotation.x=1.57;
+                mesh.rotation.x=Math.PI/2;
                 mesh.position.z=25;
                 mesh.position.y=17;
-                mesh.position.x=1;
+                mesh.position.x=0.5;
+                mesh.castShadow = true;
+               	mesh.receiveShadow = true;
                 scene.add(mesh);
+                selectableObjects.push(mesh);
 
 
                 var switchlampukamar = new THREE.BoxBufferGeometry( 0.3, 1, 1 );
@@ -154,8 +209,12 @@
                 mesh.rotation.x=1.57;
                 mesh.position.z=25;
                 mesh.position.y=17;
-                mesh.position.x=-1;
+                mesh.position.x=-0.5;
+                mesh.castShadow = true;
+               	mesh.receiveShadow = true;
                 scene.add(mesh);
+                selectableObjects.push(mesh);
+
 
 
 
@@ -169,6 +228,8 @@
                 objectLoader.load("models/desk.json",function(obj){
                     obj.position.set(45,0,50);
                     obj.scale.set(3,2.5,3);
+                    obj.castShadow = true;
+                	obj.receiveShadow = true;
                     scene.add(obj);
 
                 });
@@ -178,6 +239,8 @@
                 objectLoader.load("models/sofa.json",function(obj){
                     obj.position.set(70,0,70);
                     obj.scale.set(1.7,2.5,1.7);
+                    obj.castShadow = true;
+                	obj.receiveShadow = true;
                     scene.add(obj);
                 });
 
@@ -186,6 +249,8 @@
                     obj.position.set(50,20,-9);
                     obj.scale.set(5,5,5);
                     obj.rotation.y=3.15;
+                    obj.castShadow = true;
+                	obj.receiveShadow = true;
                     scene.add(obj);
                 });
 
@@ -198,6 +263,8 @@
                 mesh.position.y=11.5;
                 // mesh.position.z=;
                 mesh.position.x=3.8;
+                mesh.castShadow = true;
+               	mesh.receiveShadow = true;
                 scene.add(mesh);
 
                 //dop
@@ -226,11 +293,12 @@
                 texture.wrapT = THREE.RepeatWrapping;
                 texture.repeat.set( 10, 10 );
 
-                var material = new THREE.MeshStandardMaterial({ map : texture });
+                var material = new THREE.MeshStandardMaterial({ map : texture , metalness:0, roughness: 0.5});
 
                 floorMesh = new THREE.Mesh( geometry, material );
                 floorMesh.rotation.x = -Math.PI / 2;
                 objects.push( floorMesh );
+                floorMesh.receiveShadow = true;
                 scene.add( floorMesh  );
 
 
@@ -372,89 +440,111 @@
                     boundingBoxesActive = state;
                   }
                 }
+                ///tembok material
+                var wallMap = new THREE.TextureLoader().load('greywall.png');
+                wallMap.wrapS = THREE.RepeatWrapping;
+                wallMap.wrapT = THREE.RepeatWrapping;
+                wallMap.repeat.set( 10, 10 );
 
                 var planegeo = new THREE.PlaneBufferGeometry(10,10,1);
-                var material = new THREE.MeshStandardMaterial({color:0xefefef,visible:true});
+                var material = new THREE.MeshStandardMaterial({map: wallMap, color:0xefefef ,visible:true, roughness: 0.5, metalness: 0});
                 
                 //tembok depan
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,0,-10);
+                mesh.position.set(0,5,-10);
                 mesh.scale.x=30;
                 mesh.scale.y=10;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
                 //tembok kiri
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(-100,0,-10);
+                mesh.position.set(-100,5,-10);
                 mesh.rotation.set(0, Math.PI / 2, 0);
                 mesh.scale.x=20;
                 mesh.scale.y=10;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
                 //tembok belakang
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,0,90);
+                mesh.position.set(0,5,90);
                 mesh.rotation.set(0, Math.PI, 0);
                 mesh.scale.x=20;
                 mesh.scale.y=10;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
                 //tembok kanan
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(100,0,30);
+                mesh.position.set(100,5,30);
                 mesh.rotation.set(0, - Math.PI / 2, 0);
                 mesh.scale.x=30;
                 mesh.scale.y=10;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
+
+                var ceilingMap = new THREE.TextureLoader().load('ceiling.jpg');
+                ceilingMap.wrapS = THREE.RepeatWrapping;
+                ceilingMap.wrapT = THREE.RepeatWrapping;
+                ceilingMap.repeat.set( 30, 30 );
                 //langit-langit
-                var material = new THREE.MeshStandardMaterial({color:0x9f9f9f,visible:true});
+                var material = new THREE.MeshStandardMaterial({map: ceilingMap, visible:true, metalness:0, roughness:1});
                 mesh = new THREE.Mesh( planegeo, material );
                 mesh.position.set(0,60,-10);
                 mesh.rotation.set(Math.PI/2,0,0);
                 mesh.scale.x=100;
                 mesh.scale.y=100;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
 
                 //tembok batas kanan
                 var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
-                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
+                var material = new THREE.MeshStandardMaterial({map: wallMap,visible:true, metalness:0, roughness:0.5});
                 mesh = new THREE.Mesh( boxgeometry, material );
-                mesh.position.set(0,0,55);
+                mesh.position.set(0,5,55);
                 mesh.rotation.set(0, Math.PI / 2, 0);
                 //mesh.material.side=THREE.DoubleSide;
                 mesh.scale.x=7.7;
                 mesh.scale.y=40;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
 
                 //tembokbataskiri
                 var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
-                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
+                var material = new THREE.MeshStandardMaterial({map: wallMap,visible:true, metalness:0, roughness:0.5});
                 mesh = new THREE.Mesh( boxgeometry, material );
-                mesh.position.set(0,0,-35);
+                mesh.position.set(0,5,-35);
                 mesh.rotation.set(0, Math.PI / 2, 0);
                 mesh.scale.x=7.8;
                 mesh.scale.y=40;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
 
                 ///tembokbatasatas
-                var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
-                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry(6.25,2.5,1);
+                var material = new THREE.MeshStandardMaterial({map: wallMap,visible:true, metalness:0, roughness:0.5});
                 mesh = new THREE.Mesh( boxgeometry, material );
-                mesh.position.set(0,36.5,10);
+                mesh.position.set(0,42,10.25);
                 mesh.rotation.set(0, Math.PI / 2, 0);
                 mesh.scale.x=2;
                 mesh.scale.y=10.8;
+                mesh.receiveShadow = true;
                 objects.push(mesh);
                 scene.add( mesh );
+
+     
 
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setClearColor( 0x000000 );
                 renderer.setPixelRatio( window.devicePixelRatio );
                 renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.BasicShadowMap;
                 document.body.appendChild( renderer.domElement );
                 raycaster= new THREE.Raycaster();
                 raycaster.far=15;

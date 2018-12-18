@@ -79,8 +79,8 @@
 
 
                 //meja belajar minimalis
-                var mejangambang = new THREE.BoxGeometry( 13, 1, 45 );
-                var material = new THREE.MeshBasicMaterial({color:0x00ffff,visible:true});
+                var mejangambang = new THREE.BoxBufferGeometry( 13, 1, 45 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:true});
                 var mesh = new THREE.Mesh( mejangambang, material );
                 mesh.position.z=80;
                 mesh.position.y=8;
@@ -145,13 +145,13 @@
                 loaded=true;   
 
                         // Floor
-                var geometry = new THREE.PlaneGeometry(300,300); //change floor to flat(using plane)
+                var geometry = new THREE.PlaneBufferGeometry(300,300); //change floor to flat(using plane)
                 var texture = new THREE.TextureLoader().load( "textures/floor.jpg" );
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
                 texture.repeat.set( 10, 10 );
 
-                var material = new THREE.MeshBasicMaterial({ map : texture });
+                var material = new THREE.MeshStandardMaterial({ map : texture });
 
                 floorMesh = new THREE.Mesh( geometry, material );
                 floorMesh.rotation.x = -Math.PI / 2;
@@ -161,19 +161,19 @@
 
 
                 //overlay imported object using mesh, but set it to invisible
-                var boxgeometry = new THREE.BoxGeometry( 8, 50, 6 );
-                var material = new THREE.MeshBasicMaterial({color:0x00ffff,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry( 8, 50, 6 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:true});
                 var mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.x=-50;
                 mesh.name="box biru";
                 mesh.bcolor = 0x00ffff;
                 mesh.outlineid = 0;
                 objects.push(mesh);
-                selectableObjects.push(mesh); //push juka object = selectable
+                selectableObjects.push(mesh); //push jika object = selectable
                 scene.add( mesh );
                 overlaydesk=mesh;
                 //OUTLINE MESH UNTUK SELECTABLE OBJECT
-                var outlineMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: THREE.BackSide } );
+                var outlineMaterial = new THREE.MeshStandardMaterial( { color: 0x00ff00, side: THREE.BackSide } );
                 var outlineMesh = new THREE.Mesh( boxgeometry, outlineMaterial );
                 outlineMesh.position.x=-50
                 outlineMesh.scale.multiplyScalar(1.05);
@@ -192,8 +192,8 @@
                   }
                 }
 
-                var planegeo = new THREE.PlaneGeometry(10,10,1);
-                var material = new THREE.MeshBasicMaterial({color:0xefefef,visible:true});
+                var planegeo = new THREE.PlaneBufferGeometry(10,10,1);
+                var material = new THREE.MeshStandardMaterial({color:0xefefef,visible:true});
                 
                 //tembok depan
                 mesh = new THREE.Mesh( planegeo, material );
@@ -237,8 +237,8 @@
                 scene.add( mesh );
 
                 //tembok batas kanan
-                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
-                var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
+                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
                 mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.set(0,0,65);
                 mesh.rotation.set(0, Math.PI / 2, 0);
@@ -249,8 +249,8 @@
                 scene.add( mesh );
 
                 //tembokbataskiri
-                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
-                var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
+                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
                 mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.set(0,0,-25);
                 mesh.rotation.set(0, Math.PI / 2, 0);
@@ -260,8 +260,8 @@
                 scene.add( mesh );
 
                 ///tembokbatasatas
-                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
-                var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
+                var boxgeometry = new THREE.BoxBufferGeometry(10,2.5,1);
+                var material = new THREE.MeshStandardMaterial({color:0x535353,visible:true});
                 mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.set(0,36.5,20);
                 mesh.rotation.set(0, Math.PI / 2, 0);

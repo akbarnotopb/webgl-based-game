@@ -84,7 +84,7 @@
                 loaded=true;   
 
                         // Floor
-                var geometry = new THREE.PlaneGeometry(250,250); //change floor to flat(using plane)
+                var geometry = new THREE.PlaneGeometry(300,300); //change floor to flat(using plane)
                 var texture = new THREE.TextureLoader().load( "textures/floor.jpg" );
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
@@ -168,40 +168,44 @@
                 //langit-langit
                 var material = new THREE.MeshBasicMaterial({color:0x9f9f9f,visible:true});
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,90,0);
+                mesh.position.set(0,70,0);
                 mesh.rotation.set(Math.PI/2,0,0);
-                mesh.scale.x=80;
-                mesh.scale.y=60;
+                mesh.scale.x=100;
+                mesh.scale.y=100;
                 objects.push(mesh);
                 scene.add( mesh );
+
                 //tembok batas kanan
+                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
                 var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
-                mesh = new THREE.Mesh( planegeo, material );
+                mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.set(0,0,65);
                 mesh.rotation.set(0, Math.PI / 2, 0);
-                mesh.material.side=THREE.DoubleSide;
-                mesh.scale.x=8;
-                mesh.scale.y=10;
+                //mesh.material.side=THREE.DoubleSide;
+                mesh.scale.x=7.7;
+                mesh.scale.y=40;
                 objects.push(mesh);
                 scene.add( mesh );
 
                 //tembokbataskiri
-                mesh = new THREE.Mesh( planegeo, material );
+                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
+                var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
+                mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.set(0,0,-25);
                 mesh.rotation.set(0, Math.PI / 2, 0);
-                mesh.material.side=THREE.DoubleSide;
-                mesh.scale.x=7;
-                mesh.scale.y=10;
+                mesh.scale.x=7.8;
+                mesh.scale.y=40;
                 objects.push(mesh);
                 scene.add( mesh );
 
                 ///tembokbatasatas
-                mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,35.9,20);
+                var boxgeometry = new THREE.BoxGeometry(10,2.5,1);
+                var material = new THREE.MeshBasicMaterial({color:0x535353,visible:true});
+                mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.set(0,35.5,20);
                 mesh.rotation.set(0, Math.PI / 2, 0);
-                mesh.material.side=THREE.DoubleSide;
                 mesh.scale.x=2;
-                mesh.scale.y=2.8;
+                mesh.scale.y=11.6;
                 objects.push(mesh);
                 scene.add( mesh );
 

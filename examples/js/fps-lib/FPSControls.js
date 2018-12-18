@@ -33,6 +33,7 @@ THREE.PointerLockControls = function ( camera, mass, playerHeight, doubleJump, w
 
 	};
 
+
 	scope.dispose = function() {
 
 		document.removeEventListener( 'mousemove', onMouseMove, false );

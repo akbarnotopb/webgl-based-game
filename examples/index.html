@@ -20,15 +20,40 @@
     <div id="blocker">
 
         <div id="instructions">
-            <span style="font-size:40px">Click to play</span>
-            <br />
-            (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+            <span id="quest-id" style="font-size:40px">RIDEL GEMER</span>
+            <br>
+            <span style="font-size:20px" id="title-quest">"Oh my god! Where the <i>subs</i> am i?</span>
+            <br>
+            <br>
+            <br><br><br>
+            <span id="clueone">I think i was on.... Eh, i cant remember what it is!</span>
+            <br>
+            <span id="cluetwo">First of all , where am i? </span><br>
+            <span id="cluethree">Is there any clue here?</span><br>
+            <span id="cluefour"></span>
+            <br>
+            <br>
+            <br><br><br>
+            (W, A, S, D = Move, SPACE = Jump, ESC = Menu, MOUSE = Look around)
         </div>
 
     </div>
     <div id="hoveritem">
             <span>Press "R" to interact</span>
     </div>
+    <div id="clue-knowledge" style="display: none;">
+            <span>New Clue Acquired, Press ESC for More!</span>
+    </div>
+    <div id="knowledge" style="display: none;">
+            <span>New Knowledge Acquired, Press ESC for More!</span>
+    </div>
+
+    <video id="video" loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+            <source src="./resource/stars.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    </video>
+
+
+
     <script type="text/javascript">
         
         function startGame(){
@@ -46,9 +71,15 @@
             var raycaster;
             var overlayinit=false;
             var mouse=new THREE.Vector2(), INTERSECTED;
+            var stage=0;
+            var sofac,deskc,tipic,switchtamuc,switchkamarc,desklampc,deskngambangc,bedc,wardrobec,paintc,chairc,endec;
             init();
             var visibleoverlay=false;
+            var pointLight1,pointLight2, pointLight3;
+            var vvideo,vplanegeo,vtexture,vparameters,vmesh,vloaded=false,vloaded2=false;;
+            var vendedmesh,vendedmeshsure,bedmesh,floormesh;
             function init(){
+                sofac=false;deskc=false;tipic=false;switchkamarc=true;switchtamuc=true;desklampc=false;deskngambangc=false;bedc=false;wardrobec=false;paintc=false;chairc=false;
                 eventHandlers();
                 loaded=false;
                 visibleoverlay=false;
@@ -60,35 +91,9 @@
 
                 var ambient = new THREE.AmbientLight( 0x444444 );
                 scene.add( ambient );
-                // instantiate a loader
-                // var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-                // directionalLight.position.set( 0, 0, 1 ).normalize();
-                // scene.add( directionalLight );
-    //             var spotLight = new THREE.SpotLight( 0xffffff, 1 );
-				// spotLight.castShadow = true;
-				// spotLight.shadow.mapSize.width = 50;
-				// spotLight.shadow.mapSize.height = 50;
-				// spotLight.position.set(-50, 50, 50);
-				// scene.add(spotLight);
 
-    //             var rectLight = new THREE.RectAreaLight( 0xffffff, 50);
-    //             var rectLightGeometry = new THREE.BoxBufferGeometry(10, 10 , 0.01);
-				// var rectLightMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-				// var rectLightSquare = new THREE.Mesh(rectLightGeometry, rectLightMaterial);
 
-				// rectLight.add(rectLightSquare);
-				// rectLight.position.set( -50, 50, 50 );
-				// rectLight.rotation.x = Math.PI/2;
-				
-
-				// scene.add( rectLight );
-
-				// var spotLightHelper = new THREE.SpotLightHelper( spotLight );
-				// scene.add( spotLightHelper );
-				// rectLightHelper = new THREE.RectAreaLightHelper( rectLight );
-				// scene.add( rectLightHelper );
-
-				var pointLight1 = new THREE.PointLight( 0xffffff, 2, 100 );
+				pointLight1 = new THREE.PointLight( 0xffffff, 2, 100 );
 				pointLight1.position.set(-50, 58, 40 );
 				pointLight1.castShadow = true;
 				scene.add( pointLight1 );
@@ -98,7 +103,7 @@
 				pointLight1.shadow.camera.far = 500      // default
 
 
-				var pointLight2 = new THREE.PointLight( 0xffffff, 2, 100 );
+				pointLight2 = new THREE.PointLight( 0xffffff, 2, 100 );
 				pointLight2.position.set(50, 58, 40 );
 				pointLight2.castShadow = true;
 				scene.add( pointLight2 );
@@ -107,9 +112,16 @@
 				pointLight2.shadow.camera.near = 0.5;       // default
 				pointLight2.shadow.camera.far = 500      // default
 
-				// var sphereSize = 1;
-				// var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
-				// scene.add( pointLightHelper );
+
+                pointLight3 = new THREE.RectAreaLight( 0xffffff, 2,  2, 2 );
+                pointLight3.position.set( -7.6, 15, 80.8 );
+                pointLight3.lookAt( -6.6, 0, 80.8 );
+                scene.add( pointLight3 )
+
+                scene.add( pointLight3 );
+
+
+
 
                 objectLoader = new THREE.ObjectLoader();
 
@@ -129,7 +141,7 @@
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:true});
                 var mesh = new THREE.Mesh( mejangambang, material );
                 mesh.position.z=75;
-                mesh.position.y=8;
+                mesh.position.y=8.1;
                 mesh.position.x=-6.7;
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
@@ -188,11 +200,10 @@
 
 
 
-                var switchlamputamu = new THREE.BoxBufferGeometry( 0.3, 1, 1 );
-                var material = new THREE.MeshStandardMaterial({color:0xffffff,visible:true});
+                var switchlamputamu = new THREE.BoxBufferGeometry( 0.2, 1, 1 );
+                var material = new THREE.MeshStandardMaterial({color:0x0000ff,visible:true});
                 var mesh = new THREE.Mesh( switchlamputamu, material );
-                mesh.name='lamputamu'
-                mesh.rotation.x=Math.PI/2;
+                mesh.name='lamputamu';
                 mesh.position.z=25;
                 mesh.position.y=17;
                 mesh.position.x=0.5;
@@ -202,18 +213,18 @@
                 selectableObjects.push(mesh);
 
 
-                var switchlampukamar = new THREE.BoxBufferGeometry( 0.3, 1, 1 );
-                var material = new THREE.MeshStandardMaterial({color:0xffffff,visible:true});
-                var mesh = new THREE.Mesh( switchlampukamar, material );
-                mesh.name='lampukamar'
-                mesh.rotation.x=1.57;
-                mesh.position.z=25;
-                mesh.position.y=17;
-                mesh.position.x=-0.5;
-                mesh.castShadow = true;
-               	mesh.receiveShadow = true;
-                scene.add(mesh);
-                selectableObjects.push(mesh);
+                var switchlampukamar = new THREE.BoxBufferGeometry( 0.2, 1, 1 );
+                var material2 = new THREE.MeshStandardMaterial({color:0x0000ff,visible:true});
+                var lkamar = new THREE.Mesh( switchlampukamar, material2 );
+                lkamar.rotation.x=1.57;
+                lkamar.name="lampukamar";
+                lkamar.position.z=25;
+                lkamar.position.y=17;
+                lkamar.position.x=-0.5;
+                lkamar.castShadow = true;
+               	lkamar.receiveShadow = true;
+                scene.add(lkamar);
+                selectableObjects.push(lkamar);
 
 
 
@@ -254,18 +265,40 @@
                     scene.add(obj);
                 });
 
+
+                var vplanegeo = new THREE.PlaneBufferGeometry(28,16,1,1);
+
+                vvideo = document.getElementById( 'video' );
+                vtexture = new THREE.VideoTexture( vvideo );
+                vtexture.magFilter=1;
+                vtexture.minFilter=1;
+                THREE.NearestFilter=1;
+                THREE.LinierFilter=1;
+                vparameters = { color: 0xffffff, map: vtexture };
+                var mesh = new THREE.Mesh( vplanegeo, new THREE.MeshLambertMaterial( vparameters ));
+                mesh.position.x=50;
+                mesh.position.y=30;
+                mesh.position.z=-8;
+                mesh.visible=tipic;
+                vmesh=mesh;
+                scene.add(mesh);
+
+
                 //pintu
-                var pintu = new THREE.BoxBufferGeometry( 10, 1, 22.5 );
+                var pintu = new THREE.BoxBufferGeometry( 10, 1, 27.5 );
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:true});
                 var mesh = new THREE.Mesh( pintu, material );
                 mesh.rotation.x=1.57;
                 mesh.rotation.z=-1;
-                mesh.position.y=11.5;
+                mesh.position.y=14.4;
+                mesh.name="pintu";
                 // mesh.position.z=;
                 mesh.position.x=3.8;
                 mesh.castShadow = true;
                	mesh.receiveShadow = true;
                 scene.add(mesh);
+                vendedmeshsure=mesh;
+
 
                 //dop
                 objectLoader.load("models/dop.json",function(obj){
@@ -300,6 +333,7 @@
                 objects.push( floorMesh );
                 floorMesh.receiveShadow = true;
                 scene.add( floorMesh  );
+                floormesh=floorMesh;
 
 
 
@@ -316,7 +350,7 @@
                 var mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.x=-95;
                 mesh.position.z=19;
-                mesh.name="Wardrobe";
+                mesh.name="wardrobe";
                 objects.push(mesh);
                 scene.add( mesh );
                 selectableObjects.push(mesh);
@@ -330,6 +364,21 @@
                 mesh.name="bed";
                 objects.push(mesh);
                 scene.add( mesh );
+                bedmesh=mesh;
+                selectableObjects.push(mesh);
+
+
+                var boxgeometry = new THREE.BoxBufferGeometry( 50, 1, 20 );
+                var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
+                var mesh = new THREE.Mesh( boxgeometry, material );
+                mesh.position.x=-70;
+                mesh.position.z=75;
+                mesh.position.y=40;
+                mesh.name="ended";
+                objects.push(mesh);
+                scene.add( mesh );
+                vendedmesh=mesh;
+                vendedmesh.visible=false;
                 selectableObjects.push(mesh);
 
 
@@ -399,7 +448,7 @@
                 mesh.position.x=58;
                 mesh.position.y=15;
                 mesh.position.z=70;
-                mesh.name="sofa1";
+                mesh.name="sofa";
                 objects.push(mesh);
                 scene.add( mesh );
                 selectableObjects.push(mesh);
@@ -411,7 +460,7 @@
                 mesh.position.x=73;
                 mesh.position.y=15;
                 mesh.position.z=55;
-                mesh.name="sofa2";
+                mesh.name="sofa";
                 objects.push(mesh);
                 scene.add( mesh );
                 selectableObjects.push(mesh);
@@ -599,8 +648,44 @@
                 if (intersects.length > 0) {
                     for (i in selectableObjects){
                         if( selectableObjects[i]== intersects[0].object ){
+
                             selectedObject = intersects[0].object;
-                            alert(selectedObject.name + " object selected!");
+                            // alert(selectedObject.name + " object selected!");
+                            // alert(selectedObject.name);
+                            if(selectedObject.name=="twin-pict"){
+                                paintf();
+                            }
+                            else if(selectedObject.name=="bed"){
+                                bedf();
+                            }
+                            else if(selectedObject.name=="sofa"){
+                                sofaf();
+                            }
+                            else if(selectedObject.name=="tipi"){
+                                tipif();
+                            }
+                            else if(selectedObject.name=="chair"){
+                                chairf();
+                            }
+                            else if(selectedObject.name=="lamputamu"){
+                                switchtamuf();
+                            }
+                            else if(selectedObject.name=="lampukamar"){
+                                switchkamarf();
+                            }
+                            else if(selectedObject.name=="desk-lamp"){
+                                desklampf();
+                            }
+                            else if(selectedObject.name=="wardrobe"){
+                                wardrobef();
+                            }
+                            else if(selectedObject.name=="ended"){
+                                endef();
+                            }
+                            else if(selectedObject.name=="pintu"){
+                                pintuf();
+                            }
+
                         }
                     }
                 }
@@ -657,7 +742,10 @@
 
                         case 114: // r
                         case 82://R
-                            interact();
+                            if(!isKeyDown){
+                             interact();                               
+                            }
+
                             break;
 
                     }
@@ -672,6 +760,210 @@
 
                     renderer.setSize( window.innerWidth, window.innerHeight );
 
+                }
+
+                function newknowledge(){
+                    document.getElementById("knowledge").style.display='';
+
+                    setTimeout(function() {
+                      document.getElementById('knowledge').style.display='none';
+                    }, 1*1200);
+
+                }
+
+                function newclue(){
+                    document.getElementById("clue-knowledge").style.display='';
+
+                    setTimeout(function() {
+                      document.getElementById('clue-knowledge').style.display='none';
+                    }, 1*1200);                    
+                }
+
+                function resetstage(st){
+                    if(st==1 && sofac && bedc && tipic && chairc){
+                        stage=2;
+                        sofac=false;bedc=false;tipic=false;chairc=false;
+                    }
+                    else if(st==3 && vloaded2 && paintc && desklampc && wardrobec){
+                        // alert("EA");
+                        vendedmesh.visible=true;
+                        raycaster.far=50;
+                        selectableObjects.push(vendedmeshsure);
+                        stage=4;
+                    }
+                }
+
+                function sofaf(){
+                    if(stage==1 && !sofac){
+                        document.getElementById("clueone").innerHTML="There is no star when the sun shine.";
+                        sofac=true;
+                        newknowledge();
+                        resetstage(1);
+                    }
+                }
+
+                function endef(){
+                    if(stage==4 && !endec){
+                        document.getElementById("quest-id").innerHTML="CLUE#03";
+
+                        var title=document.getElementById("title-quest");
+                        title.innerHTML="WHAT NOW? OMFG!";
+                        var clueone=document.getElementById("clueone");
+                        clueone.innerHTML="*Knocking sound*";
+
+                        var cluetwo=document.getElementById("cluetwo");
+                        cluetwo.innerHTML="";
+
+                        var cluethree=document.getElementById("cluethree");
+                        cluethree.innerHTML="";
+
+                        document.getElementById("cluefour").innerHTML="";
+                        newclue();
+                    }
+                }
+
+
+                function pintuf(){
+                    if(stage==4){
+                        floormesh.visible=false;                        setTimeout(function() {
+                            window.location.href="FP_introduction.html";
+                        }, 3*1200);    
+                    }
+                }
+
+                function tipif(){
+                    if(stage==1 && !tipic){
+                        document.getElementById("cluetwo").innerHTML="You can see it.";
+                        tipic=true;
+                        newknowledge();
+                        resetstage(1);
+                    }
+                    else if((stage==2||stage==3) && !switchtamuc){
+                        
+                        tipic=!tipic;
+                        vmesh.visible=tipic;
+                        if(tipic){
+                            vvideo.play();
+                        }
+                        else{
+                            vvideo.pause();
+                        }
+                        if(!vloaded){
+                            newclue();
+                            stage=3;
+                            vloaded=true;
+                            document.getElementById("quest-id").innerHTML="CLUE#02";
+
+                            var title=document.getElementById("title-quest");
+                            title.innerHTML="Wait, what the heck? What does it mean? Counting star? 1.. 2..";
+                            var clueone=document.getElementById("clueone");
+                            clueone.innerHTML="#@$@#$@#$@#$@#$@#$@#$@#$";
+
+                            var cluetwo=document.getElementById("cluetwo");
+                            cluetwo.innerHTML="@#$@#$@#$@#$@#$@#$@#$#@$@#$";
+
+                            var cluethree=document.getElementById("cluethree");
+                            cluethree.innerHTML="%%$^&#$@#$@#$@#@$#$%#$@$#@$#@$@#$@#$@#$";
+
+                            document.getElementById("cluefour").innerHTML="!@#$#@!@#!@#$%&%*(&@#@@";
+
+                            }
+                    }
+                }
+
+
+                function switchtamuf(){
+                    pointLight2.visible=!switchtamuc;
+                    switchtamuc=!switchtamuc;
+                }
+
+                function switchkamarf(){
+                    pointLight1.visible=!switchkamarc;
+                    switchkamarc=!switchkamarc;
+                    if(stage==3){
+                        document.getElementById("clueone").innerHTML="When the star falls , the moon show its fang!";
+                        // resetstage(3);
+                        if(!vloaded2){
+
+                            newknowledge();
+                            vloaded2=true;
+                            resetstage(3);
+                        }
+                    }               
+                }
+
+                function desklampf(){
+                    if(stage==3 && !desklampc){
+                        document.getElementById("cluethree").innerHTML="The god say Hi! as he climb";
+
+                        desklampc=true;
+                        resetstage(3);
+                        newknowledge();
+                    }  
+                }
+
+                // function deskngambangf(){
+                //     if(stage==0){
+
+                //     }
+                //     else if(stage==1){
+                        
+                //     }  
+                // }
+
+                function bedf(){
+                    if(!bedc && stage==1){
+                        document.getElementById("cluefour").innerHTML="There is always something to pay";
+                        newknowledge();
+                        bedc=true;
+                        resetstage(1);
+                    }  
+                }
+
+                function wardrobef(){
+                    if(stage==3 && !wardrobec){
+                        document.getElementById("cluetwo").innerHTML="The desperate guy seeking the truth.";
+                        wardrobec=true;
+                        resetstage(3);  
+                        newknowledge();                      
+                    }  
+                }
+
+                function paintf(){
+                    if(stage==0){
+                        document.getElementById("quest-id").innerHTML="CLUE#01";
+
+                        var title=document.getElementById("title-quest");
+                        title.innerHTML="Oooh!!! I was on my trip to zombieland. But suddenly something went off. Anyway , what is this? There is something on it.";
+                        var clueone=document.getElementById("clueone");
+                        clueone.innerHTML="A paper written with an uncompleted text.";
+
+                        var cluetwo=document.getElementById("cluetwo");
+                        cluetwo.innerHTML="@#$@#$@#$@#$@#$@#$@#$#@$@#$";
+
+                        var cluethree=document.getElementById("cluethree");
+                        cluethree.innerHTML="%%$^&#$@#$@#$@#@$#$%#$@$#@$#@$@#$@#$@#$";
+
+                        document.getElementById("cluefour").innerHTML="!@#$#@!@#!@#$%&%*(&@#@@";
+
+                        newclue();
+                        stage=1;
+                    }
+                    else if(stage==3 && !paintc){
+                        document.getElementById("cluefour").innerHTML="He climb hoping that the god send him home.";
+                        paintc=true;
+                        newknowledge();
+                        resetstage(3);
+                    }  
+                }
+
+                function chairf(){
+                    if(stage==1 && !chairc){
+                        document.getElementById("cluethree").innerHTML="You can't see it";
+                        newknowledge();
+                        chairc=true;
+                        resetstage(1); 
+                    }  
                 }
 
         }

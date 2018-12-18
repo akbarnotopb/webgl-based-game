@@ -146,6 +146,29 @@ body {
 #knowledge span {
     background-color: rgb(140, 255, 102);
 }
+
+#ending {
+    /*background-color: rgba(255,255,255,0.5);*/
+    
+    font-size: 60px;
+    position: absolute;
+    bottom:40%;
+    text-align: center;
+    width:100%;
+    font-family: "Verdana";
+    -webkit-animation: fadein 10s;
+}
+
+#ending span {
+    background-color: rgba(255,255,255,0.5);
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */

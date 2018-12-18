@@ -52,6 +52,9 @@
             <source src="./resource/stars.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
     </video>
 
+    <div id="ending" style="display: none;">
+    	<span>You fell down. You don't know what's happening. You don't know what to do and then you realized, It's just a game. </span>
+    </div>
 
 
     <script type="text/javascript">
@@ -812,7 +815,7 @@
                         clueone.innerHTML="*Knocking sound*";
 
                         var cluetwo=document.getElementById("cluetwo");
-                        cluetwo.innerHTML="";
+                        cluetwo.innerHTML="Who's that?!";
 
                         var cluethree=document.getElementById("cluethree");
                         cluethree.innerHTML="";
@@ -825,9 +828,14 @@
 
                 function pintuf(){
                     if(stage==4){
-                        floormesh.visible=false;                        setTimeout(function() {
+                        floormesh.visible=false;
+                        setTimeout(function() {
+                            document.getElementById("ending").style.display='';
+                        }, 10*1200);  
+                        
+                        setTimeout(function() {
                             window.location.href="FP_introduction.html";
-                        }, 3*1200);    
+                        }, 20*1200);    
                     }
                 }
 
@@ -855,7 +863,7 @@
                             document.getElementById("quest-id").innerHTML="CLUE#02";
 
                             var title=document.getElementById("title-quest");
-                            title.innerHTML="Wait, what the heck? What does it mean? Counting star? 1.. 2..";
+                            title.innerHTML="Wait, what? What does it mean? Counting star? 1.. 2..";
                             var clueone=document.getElementById("clueone");
                             clueone.innerHTML="#@$@#$@#$@#$@#$@#$@#$@#$";
 

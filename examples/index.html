@@ -55,12 +55,12 @@
 
                 renderer = new THREE.WebGLRenderer();
 
-                var ambient = new THREE.AmbientLight( 0x444444 );
-                scene.add( ambient );
-                // instantiate a loader
-                var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-                directionalLight.position.set( 0, 0, 1 ).normalize();
-                scene.add( directionalLight );
+                // var ambient = new THREE.AmbientLight( 0x444444 );
+                // scene.add( ambient );
+                // // instantiate a loader
+                // var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+                // directionalLight.position.set( 0, 0, 1 ).normalize();
+                // scene.add( directionalLight );
 
 
                 objectLoader = new THREE.ObjectLoader();
@@ -247,6 +247,7 @@
                 mesh.name="Wardrobe";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 50, 40, 20 );
@@ -257,6 +258,7 @@
                 mesh.name="bed";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 9, 20, 7 );
@@ -268,6 +270,7 @@
                 mesh.name="desk-lamp";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 9, 20, 22 );
@@ -279,6 +282,8 @@
                 mesh.name="desk";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
+
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 6, 20, 5 );
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
@@ -289,6 +294,7 @@
                 mesh.name="chair";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 30, 20, 0.5 );
@@ -300,6 +306,7 @@
                 mesh.name="twin-pict";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 30, 15, 0.5 );
@@ -311,6 +318,8 @@
                 mesh.name="tipi";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
+
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 40, 15, 15 );
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
@@ -321,6 +330,8 @@
                 mesh.name="sofa1";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
+
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 10, 15, 15 );
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
@@ -331,6 +342,8 @@
                 mesh.name="sofa2";
                 objects.push(mesh);
                 scene.add( mesh );
+                selectableObjects.push(mesh);
+
 
 
                 var boxgeometry = new THREE.BoxBufferGeometry( 10, 15, 10 );
@@ -339,7 +352,7 @@
                 mesh.position.x=48;
                 mesh.position.y=15;
                 mesh.position.z=50;
-                mesh.name="sofa2";
+                mesh.name="mejatamu";
                 objects.push(mesh);
                 scene.add( mesh );
 
@@ -462,11 +475,11 @@
                     if(!overlayinit){
                         ScreenOverlay(controls);
                         overlayinit=true;
-                        arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
+                        // arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
                     }
-                    scene.remove ( arrow );
-                    arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
-                    scene.add( arrow );
+                    // scene.remove ( arrow );
+                    // arrow = new THREE.ArrowHelper( raycaster.ray.direction, controls.getPlayer().position, 100, Math.random() * 0xffffff );
+                    // scene.add( arrow );
                 }
                 onRaycast();
                 requestAnimationFrame(render);
@@ -476,21 +489,19 @@
             function onRaycast(){
                 raycaster.setFromCamera( mouse, camera );
                 var intersects = raycaster.intersectObjects( scene.children );
-                var flag=false;
-                if ( intersects.length > 0 ) {
+                // var flag=false;
+                // if ( intersects.length > 0 ) {
 
-                    for (i in selectableObjects){
-                        if( selectableObjects[i]== intersects[0].object ){
-                            outlines[intersects[0].object.outlineid].visible=true;
-                            flag=true;
-                        }
-                    } 
-                }
-                if(!flag){
-                    for (i in outlines){
-                        outlines[i].visible=false;
-                    }
-                }
+                //     for (i in selectableObjects){
+                //         if( selectableObjects[i]== intersects[0].object ){
+                //             outlines[intersects[0].object.outlineid].visible=true;
+                //             flag=true;
+                //         }
+                //     } 
+                // }
+                // if(!flag){
+
+                // }
 
             }
 
@@ -558,16 +569,10 @@
                             controls.walk(boolean);
                             break;
 
-                        case 67: // crouch (CTRL + W etc destroys tab in Chrome!)
-                            controls.crouch(boolean);
-                            break;
-
-                        case 66: // b
-                            toggleBoundingBoxes(boolean);
-                            break;
-
-                        case 73: // i
+                        case 114: // r
+                        case 82://R
                             interact();
+                            break;
 
                     }
                 }

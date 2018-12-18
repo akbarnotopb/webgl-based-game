@@ -26,6 +26,9 @@
         </div>
 
     </div>
+    <div id="hoveritem">
+            <span>Press "R" to interact</span>
+    </div>
     <script type="text/javascript">
         
         function startGame(){
@@ -481,19 +484,20 @@
             function onRaycast(){
                 raycaster.setFromCamera( mouse, camera );
                 var intersects = raycaster.intersectObjects( scene.children );
-                // var flag=false;
-                // if ( intersects.length > 0 ) {
+                var flag=false;
+                if ( intersects.length > 0 ) {
 
-                //     for (i in selectableObjects){
-                //         if( selectableObjects[i]== intersects[0].object ){
-                //             outlines[intersects[0].object.outlineid].visible=true;
-                //             flag=true;
-                //         }
-                //     } 
-                // }
-                // if(!flag){
-
-                // }
+                    for (i in selectableObjects){
+                        if( selectableObjects[i]== intersects[0].object ){
+                            //outlines[intersects[0].object.outlineid].visible=true;
+                            document.getElementById("hoveritem").style.display= '';
+                            flag=true;
+                        }
+                    } 
+                }
+                if(!flag){
+                    document.getElementById("hoveritem").style.display= 'none';
+                }
 
             }
 

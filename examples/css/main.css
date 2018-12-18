@@ -109,6 +109,19 @@ body {
 
 }
 
+#hoveritem {
+    /*background-color: rgba(255,255,255,0.5);*/
+    font-size: 2vw;
+    position: absolute;
+    bottom:25%;
+    text-align: center;
+    width:100%;
+}
+
+#hoveritem span {
+    background-color: rgba(255,255,255,0.5);
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */

@@ -55,12 +55,12 @@
 
                 renderer = new THREE.WebGLRenderer();
 
-                // var ambient = new THREE.AmbientLight( 0x444444 );
-                // scene.add( ambient );
-                // // instantiate a loader
-                // var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-                // directionalLight.position.set( 0, 0, 1 ).normalize();
-                // scene.add( directionalLight );
+                var ambient = new THREE.AmbientLight( 0x444444 );
+                scene.add( ambient );
+                // instantiate a loader
+                var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+                directionalLight.position.set( 0, 0, 1 ).normalize();
+                scene.add( directionalLight );
 
 
                 objectLoader = new THREE.ObjectLoader();
@@ -103,10 +103,11 @@
                 });
 
 
-                //kasur
-                objectLoader.load("models/wardrobe.json",function(obj){
-                    obj.position.set(-33,8,30);
-                    obj.scale.set(20,20,20);
+                // //wardrobe
+                objectLoader.load("models/wardrobe2.json",function(obj){
+                    obj.position.set(-97,11,15);
+                    obj.rotation.y=0.593
+                    obj.scale.set(8,12,11);
                     scene.add(obj);
                 });
 
@@ -239,11 +240,11 @@
 
 
                 //overlay imported object using mesh, but set it to invisible
-                var boxgeometry = new THREE.BoxBufferGeometry( 5, 80, 25 );
+                var boxgeometry = new THREE.BoxBufferGeometry( 3, 80, 15 );
                 var material = new THREE.MeshStandardMaterial({color:0x00ffff,visible:visibleoverlay});
                 var mesh = new THREE.Mesh( boxgeometry, material );
                 mesh.position.x=-95;
-                mesh.position.z=23;
+                mesh.position.z=19;
                 mesh.name="Wardrobe";
                 objects.push(mesh);
                 scene.add( mesh );
@@ -356,16 +357,7 @@
                 objects.push(mesh);
                 scene.add( mesh );
 
-
-
-                //OUTLINE MESH UNTUK SELECTABLE OBJECT
-                var outlineMaterial = new THREE.MeshStandardMaterial( { color: 0x00ff00, side: THREE.BackSide } );
-                var outlineMesh = new THREE.Mesh( boxgeometry, outlineMaterial );
-                outlineMesh.position.x=-50
-                outlineMesh.scale.multiplyScalar(1.05);
-                outlines.push(outlineMesh);
-                outlineMesh.visible=false;
-                scene.add( outlineMesh );            
+         
 
 
                toggleBoundingBoxes = function(bool) {
@@ -413,9 +405,9 @@
                 objects.push(mesh);
                 scene.add( mesh );
                 //langit-langit
-                var material = new THREE.MeshBasicMaterial({color:0x9f9f9f,visible:true});
+                var material = new THREE.MeshStandardMaterial({color:0x9f9f9f,visible:true});
                 mesh = new THREE.Mesh( planegeo, material );
-                mesh.position.set(0,70,-10);
+                mesh.position.set(0,60,-10);
                 mesh.rotation.set(Math.PI/2,0,0);
                 mesh.scale.x=100;
                 mesh.scale.y=100;

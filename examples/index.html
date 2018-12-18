@@ -132,7 +132,7 @@
                 }
 
                 var planegeo = new THREE.PlaneGeometry(10,10,1);
-                var material = new THREE.MeshBasicMaterial({color:0x0000ff,visible:true});
+                var material = new THREE.MeshBasicMaterial({color:0xefefef,visible:true});
                 
                 //tembok depan
                 mesh = new THREE.Mesh( planegeo, material );
@@ -165,8 +165,8 @@
                 mesh.scale.y=10;
                 objects.push(mesh);
                 scene.add( mesh );
-
-                var material = new THREE.MeshBasicMaterial({color:0x6f6f6f,visible:true});
+                //langit-langit
+                var material = new THREE.MeshBasicMaterial({color:0x9f9f9f,visible:true});
                 mesh = new THREE.Mesh( planegeo, material );
                 mesh.position.set(0,100,0);
                 mesh.rotation.set(Math.PI/2,0,0);
